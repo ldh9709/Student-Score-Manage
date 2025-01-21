@@ -1,0 +1,67 @@
+/* 헤더 전체 스타일 */
+.header {
+  display: flex; /* 플렉스 박스 레이아웃 사용 */
+  justify-content: space-between; /* 좌우로 요소를 분리 */
+  align-items: center; /* 세로 정렬을 가운데로 */
+  padding: 10px 20px; /* 여백 설정 */
+  background-color: #fff; /* 배경색 설정 */
+  border-bottom: 1px solid #ddd; /* 아래쪽 경계선 */
+  height: 70px; /* 헤더 높이 */
+}
+
+/* 로고와 메뉴를 담는 컨테이너 */
+.logo-and-menu {
+  display: flex; /* 로고와 메뉴를 가로로 정렬 */
+  align-items: center; /* 세로 방향으로 가운데 정렬 */
+  margin-left: 400px; /* 왼쪽에 여유 공간 추가하여 오른쪽으로 이동 */
+}
+
+/* 로고 스타일 */
+.logo {
+  width: 84px;
+  height: 42px;
+}
+
+/* 메뉴 스타일 */
+.menu ul {
+  display: flex; /* 메뉴 항목들을 가로로 정렬 */
+  list-style: none; /* 기본 리스트 스타일 제거 */
+  padding: 0;
+  margin-left: 50px;
+  text-align: center;
+}
+
+.menu ul li {
+  margin-right: 30px; /* 메뉴 항목 간격 */
+}
+
+.menu ul li a {
+  text-decoration: none; /* 밑줄 제거 */
+  color: #333; /* 텍스트 색상 */
+}
+
+.menu ul li a:hover {
+  color: #007BFF; /* 호버 시 강조 색상 */
+}
+
+/* 로그인 및 회원가입 스타일 */
+.auth-links {
+  display: flex; /* 가로 정렬 */
+  align-items: center; /* 세로 정렬 */
+  gap: 30px; /* 간격 추가 */
+  margin-right: 300px;
+}
+
+.auth-links a {
+  text-decoration: none; /* 밑줄 제거 */
+  color: #333; /* 텍스트 색상 */
+}
+
+.auth-links a:hover {
+  color: #007BFF; /* 호버 시 강조 색상 */
+}
+
+/* 로그인과 회원가입 사이의 구분자 스타일 */
+.auth-links span {
+  color: #ccc; /* 구분자 색상 */
+}
