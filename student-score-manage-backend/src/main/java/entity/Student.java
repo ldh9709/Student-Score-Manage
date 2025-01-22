@@ -1,5 +1,7 @@
 package entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +23,7 @@ public class Student {
 	private String studentGender;
 	
 	@Column(name = "student_birthday")
-	private String studentBirthday;
+	private LocalDateTime studentBirthday;
 	
 	@Column(name = "student_grade")
 	private String studentGrade;//FK
@@ -42,7 +44,7 @@ public class Student {
 	private String studentSchool;//FK
 	
 	@Column(name = "student_registration_date")
-	private String studentRegistrationDate;
+	private LocalDateTime studentRegistrationDate;
 	
 	
 }

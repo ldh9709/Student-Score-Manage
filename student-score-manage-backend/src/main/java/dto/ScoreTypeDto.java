@@ -1,5 +1,6 @@
 package dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,14 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherDto {
+public class ScoreTypeDto {
 	
-	private Long teacherNo;
+	private Long gradeNo;
 	
-	private String teacherName;
-	
-	private String teacherId;
-	
-	private String teacherPassword;
+	private String gradeName;
 	
 }

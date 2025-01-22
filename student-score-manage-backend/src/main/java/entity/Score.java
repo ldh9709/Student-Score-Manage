@@ -15,7 +15,7 @@ public class Score {
 	private Long scoreNo;
 	
 	@Column(name = "score_value")
-	private String scoreValue;
+	private Integer scoreValue;
 	
 	@Column(name = "score_rating")
 	private String scoreRating;
