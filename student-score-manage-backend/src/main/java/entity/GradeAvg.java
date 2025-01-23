@@ -15,7 +15,7 @@ public class GradeAvg {
 	private Long gradeAvgNo;
 	
 	@Column(name = "grade_name")
-	private String gradeAvgValue;
+	private Integer gradeAvgValue;
 	
 	@Column(name = "subject_no")
 	private Subject subject;

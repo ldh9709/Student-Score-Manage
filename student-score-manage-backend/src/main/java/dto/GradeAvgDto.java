@@ -10,10 +10,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GradeDto {
+public class GradeAvgDto {
 	
-	private Long gradeNo;
+	private Long gradeAvgNo;
 	
-	private String gradeName;
+	private Long subjectNo;
+
+	private Long scoreTypeNo;
+	
+	private Integer gradeAvgValue;
 	
 }
