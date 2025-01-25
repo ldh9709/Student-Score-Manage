@@ -14,25 +14,66 @@ public class TeacherServiceImpl implements TeacherService {
 	@Override
 	public Teacher saveTeacher(TeacherDto teacherDto) {
 		
-		return null;
+		try {
+		
+			Teacher teacher = Teacher.toEntity(teacherDto);
+			
+			return teacherRepository.save(teacher);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("saveTeacher fail", e); // 예외 재던짐
+		}
+		
 	}
 
 	@Override
 	public Teacher updateTeacher(TeacherDto teacherDto) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			
+			Teacher teacher = teacherRepository.findByTeacherNo(teacherDto.getTeacherNo());
+			
+			teacher.setTeacherName(teacherDto.getTeacherName());
+			
+			teacher.setTeacherPassword(teacherDto.getTeacherPassword());
+			
+			return teacherRepository.save(teacher);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("updateTeacher fail", e); // 예외 재던짐
+		}
 	}
 
 	@Override
 	public Teacher deleteTeacher(Long teacherNo) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			
+			Teacher findTeacher = teacherRepository.findByTeacherNo(teacherNo);
+			
+			teacherRepository.deleteById(teacherNo);
+			
+			return findTeacher;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("deleteTeacher fail", e); // 예외 재던짐
+		}
+		
 	}
 
 	@Override
 	public Teacher getTeacher(Long teacherNo) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			
+			Teacher findTeacher = teacherRepository.findByTeacherNo(teacherNo);
+			
+			return findTeacher;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("getTeacher fail", e); // 예외 재던짐
+		}
 	}
 	
 }
