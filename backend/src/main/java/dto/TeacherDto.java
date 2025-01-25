@@ -1,5 +1,6 @@
 package dto;
 
+import entity.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +19,14 @@ public class TeacherDto {
 	private String teacherId;
 	
 	private String teacherPassword;
+	
+	public static Teacher toDto(Teacher teacher) {
+		return Teacher.builder()
+				.teacherNo(teacher.getTeacherNo())
+				.teacherName(teacher.getTeacherName())
+				.teacherId(teacher.getTeacherId())
+				.teacherPassword(teacher.getTeacherPassword())
+				.build();
+	}
 	
 }

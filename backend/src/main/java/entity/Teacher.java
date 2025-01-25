@@ -1,5 +1,6 @@
 package entity;
 
+import dto.TeacherDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,5 +31,14 @@ public class Teacher {
 	
 	@Column(name = "teacher_password")
 	private String teacherPassword;
+	
+	public static Teacher toEntity(TeacherDto teacherDto) {
+		return Teacher.builder()
+				.teacherNo(teacherDto.getTeacherNo())
+				.teacherName(teacherDto.getTeacherName())
+				.teacherId(teacherDto.getTeacherId())
+				.teacherPassword(teacherDto.getTeacherPassword())
+				.build();
+	}
 	
 }
