@@ -20,8 +20,8 @@ public class TeacherDto {
 	
 	private String teacherPassword;
 	
-	public static Teacher toDto(Teacher teacher) {
-		return Teacher.builder()
+	public static TeacherDto toDto(Teacher teacher) {
+		return TeacherDto.builder()
 				.teacherNo(teacher.getTeacherNo())
 				.teacherName(teacher.getTeacherName())
 				.teacherId(teacher.getTeacherId())

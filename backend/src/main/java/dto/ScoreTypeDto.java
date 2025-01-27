@@ -1,6 +1,7 @@
 package dto;
 
 
+import entity.ScoreType;
 import entity.Subject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,10 +18,10 @@ public class ScoreTypeDto {
 	
 	private String scoreTypeName;
 	
-    public static ScoreTypeDto toDto(ScoreTypeDto scoreTypeDto) {
+    public static ScoreTypeDto toDto(ScoreType scoreType) {
         return ScoreTypeDto.builder()
-                .scoreTypeNo(scoreTypeDto.getScoreTypeNo())
-                .scoreTypeName(scoreTypeDto.getScoreTypeName())
+                .scoreTypeNo(scoreType.getScoreTypeNo())
+                .scoreTypeName(scoreType.getScoreTypeName())
                 .build();
     }
 	
