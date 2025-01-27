@@ -1,11 +1,13 @@
 package service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import dto.TeacherDto;
 import entity.Teacher;
 import repository.TeacherRepository;
 
+@Service
 public class TeacherServiceImpl implements TeacherService {
 	
 	@Autowired

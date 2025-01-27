@@ -1,22 +1,27 @@
 package service;
 
+import java.util.List;
+
 import dto.GradeDto;
 import entity.Grade;
+import entity.School;
 
 public interface GradeService {
 	
-	//성적 추가
+	//학년 추가
 	Grade saveGrade(GradeDto gradeDto);
 	
-	//성적 업데이트
+	//학년 업데이트
 	Grade updateGrade(GradeDto gradeDto);
 	
-	//성적 삭제
+	//학년 삭제
 	Grade deleteGrade(Long gradeNo);
 	
-	//성적 상세
+	//학년 상세
 	Grade getGrade(Long gradeNo);
 	
+	//학년 리스트
+	List<Grade> getGradeList();	
 	
 	
 }
