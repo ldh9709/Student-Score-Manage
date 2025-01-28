@@ -18,21 +18,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dto.GradeDto;
-import entity.Grade;
+import dto.StudentDto;
+import entity.Student;
 import io.swagger.v3.oas.annotations.Operation;
 import response.Response;
 import response.ResponseMessage;
 import response.ResponseStatusCode;
-import service.GradeService;
+import service.StudentService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/grade")
-public class GradeRestController {
+@RequestMapping("/student")
+public class StudentRestController {
 	
 	@Autowired
-	private GradeService gradeService;
+	private StudentService studentService;
 	
 	
     /* 공통 HttpHeaders 생성 메서드 */
@@ -47,84 +47,84 @@ public class GradeRestController {
         return new ResponseEntity<>(response, headers, status);
     }
     
-	/* 학년 추가 */
-	@Operation(summary = "학년 추가")
+	/* 학생 추가 */
+	@Operation(summary = "학생 추가")
 	@PostMapping
-    public ResponseEntity<Response> saveGrade(@RequestBody GradeDto gradeDto) {
+    public ResponseEntity<Response> saveStudent(@RequestBody StudentDto studentDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
-        gradeService.saveGrade(gradeDto);
+        studentService.saveStudent(studentDto);
 
-        response.setStatus(ResponseStatusCode.CREATED_GRADE_SUCCESS);
-        response.setMessage(ResponseMessage.CREATED_GRADE_SUCCESS);
+        response.setStatus(ResponseStatusCode.CREATED_STUDENT_SUCCESS);
+        response.setMessage(ResponseMessage.CREATED_STUDENT_SUCCESS);
 
         return createResponse(response, headers, HttpStatus.CREATED);
     }
 	
-	/* 학년 수정 */
-    @Operation(summary = "학년 수정")
-    @PutMapping("/{gradeNo}")
-    public ResponseEntity<Response> updateGrade(@PathVariable Long gradeNo, @RequestBody GradeDto gradeDto) {
+	/* 학생 수정 */
+    @Operation(summary = "학생 수정")
+    @PutMapping("/{studentNo}")
+    public ResponseEntity<Response> updateStudent(@PathVariable Long studentNo, @RequestBody StudentDto studentDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
-        Grade updatedGrade = gradeService.updateGrade(gradeDto);
-        GradeDto updatedGradeDto = GradeDto.toDto(updatedGrade);
+        Student updatedStudent = studentService.updateStudent(studentDto);
+        StudentDto updatedStudentDto = StudentDto.toDto(updatedStudent);
 
-        response.setStatus(ResponseStatusCode.UPDATED_GRADE_SUCCESS);
-        response.setMessage(ResponseMessage.UPDATED_GRADE_SUCCESS);
-        response.setData(updatedGradeDto);
+        response.setStatus(ResponseStatusCode.UPDATED_STUDENT_SUCCESS);
+        response.setMessage(ResponseMessage.UPDATED_STUDENT_SUCCESS);
+        response.setData(updatedStudentDto);
 
         return createResponse(response, headers, HttpStatus.OK);
     }
 	
-	/* 학년 조회 */
-    @Operation(summary = "학년 조회")
-    @GetMapping("/{gradeNo}")
-    public ResponseEntity<Response> getGrade(@PathVariable Long gradeNo) {
+	/* 학생 조회 */
+    @Operation(summary = "학생 조회")
+    @GetMapping("/{studentNo}")
+    public ResponseEntity<Response> getStudent(@PathVariable Long studentNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
-        Grade grade = gradeService.getGrade(gradeNo);
-        GradeDto gradeDto = GradeDto.toDto(grade);
+        Student student = studentService.getStudent(studentNo);
+        StudentDto studentDto = StudentDto.toDto(student);
 
-        response.setStatus(ResponseStatusCode.GET_GRADE_SUCCESS);
-        response.setMessage(ResponseMessage.GET_GRADE_SUCCESS);
-        response.setData(gradeDto);
+        response.setStatus(ResponseStatusCode.GET_STUDENT_SUCCESS);
+        response.setMessage(ResponseMessage.GET_STUDENT_SUCCESS);
+        response.setData(studentDto);
 
         return createResponse(response, headers, HttpStatus.OK);
     }
 
-    /* 학년 리스트 조회 */
-    @Operation(summary = "학년 리스트 조회")
+    /* 학생 리스트 조회 */
+    @Operation(summary = "학생 리스트 조회")
     @GetMapping
-    public ResponseEntity<Response> getGradeList() {
+    public ResponseEntity<Response> getStudentList() {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
-        List<GradeDto> gradeList = gradeService.getGradeList().stream()
-                .map(GradeDto::toDto)
+        List<StudentDto> studentList = studentService.getStudentList().stream()
+                .map(StudentDto::toDto)
                 .toList();
 
-        response.setStatus(ResponseStatusCode.GET_GRADE_SUCCESS);
-        response.setMessage(ResponseMessage.GET_GRADE_SUCCESS);
-        response.setData(gradeList);
+        response.setStatus(ResponseStatusCode.GET_STUDENT_SUCCESS);
+        response.setMessage(ResponseMessage.GET_STUDENT_SUCCESS);
+        response.setData(studentList);
 
         return createResponse(response, headers, HttpStatus.OK);
     }
     
-	/* 학년 삭제 */
-    @Operation(summary = "학년 삭제")
-    @DeleteMapping("/{gradeNo}")
-    public ResponseEntity<Response> deleteGrade(@PathVariable Long gradeNo) {
+	/* 학생 삭제 */
+    @Operation(summary = "학생 삭제")
+    @DeleteMapping("/{studentNo}")
+    public ResponseEntity<Response> deleteStudent(@PathVariable Long studentNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
-        gradeService.deleteGrade(gradeNo);
+        studentService.deleteStudent(studentNo);
 
-        response.setStatus(ResponseStatusCode.DELETED_GRADE_SUCCESS);
-        response.setMessage(ResponseMessage.DELETED_GRADE_SUCCESS);
+        response.setStatus(ResponseStatusCode.DELETED_STUDENT_SUCCESS);
+        response.setMessage(ResponseMessage.DELETED_STUDENT_SUCCESS);
 
         return createResponse(response, headers, HttpStatus.NO_CONTENT);
     }
