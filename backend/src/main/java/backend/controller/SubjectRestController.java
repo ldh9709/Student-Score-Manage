@@ -65,7 +65,7 @@ public class SubjectRestController {
 	/* 과목 수정 */
     @Operation(summary = "과목 수정")
     @PutMapping("/{subjectNo}")
-    public ResponseEntity<Response> updateSubject(@PathVariable Long subjectNo, @RequestBody SubjectDto subjectDto) {
+    public ResponseEntity<Response> updateSubject(@PathVariable("subjectNo") Long subjectNo, @RequestBody SubjectDto subjectDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -82,7 +82,7 @@ public class SubjectRestController {
 	/* 과목 조회 */
     @Operation(summary = "과목 조회")
     @GetMapping("/{subjectNo}")
-    public ResponseEntity<Response> getSubject(@PathVariable Long subjectNo) {
+    public ResponseEntity<Response> getSubject(@PathVariable("subjectNo") Long subjectNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -117,7 +117,7 @@ public class SubjectRestController {
 	/* 과목 삭제 */
     @Operation(summary = "과목 삭제")
     @DeleteMapping("/{subjectNo}")
-    public ResponseEntity<Response> deleteSubject(@PathVariable Long subjectNo) {
+    public ResponseEntity<Response> deleteSubject(@PathVariable("subjectNo") Long subjectNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 

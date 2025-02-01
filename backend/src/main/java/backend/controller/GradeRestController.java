@@ -30,11 +30,10 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/grade")
 public class GradeRestController {
-	
-	@Autowired
-	private GradeService gradeService;
-	
-	
+    
+    @Autowired
+    private GradeService gradeService;
+    
     /* 공통 HttpHeaders 생성 메서드 */
     private HttpHeaders createHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
@@ -46,10 +45,10 @@ public class GradeRestController {
     private ResponseEntity<Response> createResponse(Response response, HttpHeaders headers, HttpStatus status) {
         return new ResponseEntity<>(response, headers, status);
     }
-    
-	/* 학년 추가 */
-	@Operation(summary = "학년 추가")
-	@PostMapping
+
+    /* 학년 추가 */
+    @Operation(summary = "학년 추가")
+    @PostMapping
     public ResponseEntity<Response> saveGrade(@RequestBody GradeDto gradeDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
@@ -61,11 +60,11 @@ public class GradeRestController {
 
         return createResponse(response, headers, HttpStatus.CREATED);
     }
-	
-	/* 학년 수정 */
+
+    /* 학년 수정 */
     @Operation(summary = "학년 수정")
     @PutMapping("/{gradeNo}")
-    public ResponseEntity<Response> updateGrade(@PathVariable Long gradeNo, @RequestBody GradeDto gradeDto) {
+    public ResponseEntity<Response> updateGrade(@PathVariable("gradeNo") Long gradeNo, @RequestBody GradeDto gradeDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -78,11 +77,11 @@ public class GradeRestController {
 
         return createResponse(response, headers, HttpStatus.OK);
     }
-	
-	/* 학년 조회 */
+
+    /* 학년 조회 */
     @Operation(summary = "학년 조회")
     @GetMapping("/{gradeNo}")
-    public ResponseEntity<Response> getGrade(@PathVariable Long gradeNo) {
+    public ResponseEntity<Response> getGrade(@PathVariable("gradeNo") Long gradeNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -113,11 +112,11 @@ public class GradeRestController {
 
         return createResponse(response, headers, HttpStatus.OK);
     }
-    
-	/* 학년 삭제 */
+
+    /* 학년 삭제 */
     @Operation(summary = "학년 삭제")
     @DeleteMapping("/{gradeNo}")
-    public ResponseEntity<Response> deleteGrade(@PathVariable Long gradeNo) {
+    public ResponseEntity<Response> deleteGrade(@PathVariable("gradeNo") Long gradeNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 

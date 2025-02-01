@@ -65,7 +65,7 @@ public class StudentRestController {
 	/* 학생 수정 */
     @Operation(summary = "학생 수정")
     @PutMapping("/{studentNo}")
-    public ResponseEntity<Response> updateStudent(@PathVariable Long studentNo, @RequestBody StudentDto studentDto) {
+    public ResponseEntity<Response> updateStudent(@PathVariable("studentNo") Long studentNo, @RequestBody StudentDto studentDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -82,7 +82,7 @@ public class StudentRestController {
 	/* 학생 조회 */
     @Operation(summary = "학생 조회")
     @GetMapping("/{studentNo}")
-    public ResponseEntity<Response> getStudent(@PathVariable Long studentNo) {
+    public ResponseEntity<Response> getStudent(@PathVariable("studentNo") Long studentNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -117,7 +117,7 @@ public class StudentRestController {
 	/* 학생 삭제 */
     @Operation(summary = "학생 삭제")
     @DeleteMapping("/{studentNo}")
-    public ResponseEntity<Response> deleteStudent(@PathVariable Long studentNo) {
+    public ResponseEntity<Response> deleteStudent(@PathVariable("studentNo") Long studentNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 

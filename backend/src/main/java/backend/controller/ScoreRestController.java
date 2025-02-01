@@ -8,15 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import backend.dto.ScoreDto;
 import backend.entity.Score;
@@ -30,11 +22,10 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/score")
 public class ScoreRestController {
-	
-	@Autowired
-	private ScoreService scoreService;
-	
-	
+
+    @Autowired
+    private ScoreService scoreService;
+
     /* 공통 HttpHeaders 생성 메서드 */
     private HttpHeaders createHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
@@ -46,10 +37,10 @@ public class ScoreRestController {
     private ResponseEntity<Response> createResponse(Response response, HttpHeaders headers, HttpStatus status) {
         return new ResponseEntity<>(response, headers, status);
     }
-    
-	/* 성적 추가 */
-	@Operation(summary = "성적 추가")
-	@PostMapping
+
+    /* 성적 추가 */
+    @Operation(summary = "성적 추가")
+    @PostMapping
     public ResponseEntity<Response> saveScore(@RequestBody ScoreDto scoreDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
@@ -61,11 +52,11 @@ public class ScoreRestController {
 
         return createResponse(response, headers, HttpStatus.CREATED);
     }
-	
-	/* 성적 수정 */
+
+    /* 성적 수정 */
     @Operation(summary = "성적 수정")
     @PutMapping("/{scoreNo}")
-    public ResponseEntity<Response> updateScore(@PathVariable Long scoreNo, @RequestBody ScoreDto scoreDto) {
+    public ResponseEntity<Response> updateScore(@PathVariable("scoreNo") Long scoreNo, @RequestBody ScoreDto scoreDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -78,11 +69,11 @@ public class ScoreRestController {
 
         return createResponse(response, headers, HttpStatus.OK);
     }
-	
-	/* 성적 조회 */
+
+    /* 성적 조회 */
     @Operation(summary = "성적 조회")
     @GetMapping("/{scoreNo}")
-    public ResponseEntity<Response> getScore(@PathVariable Long scoreNo) {
+    public ResponseEntity<Response> getScore(@PathVariable("scoreNo") Long scoreNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -113,11 +104,11 @@ public class ScoreRestController {
 
         return createResponse(response, headers, HttpStatus.OK);
     }
-    
-	/* 성적 삭제 */
+
+    /* 성적 삭제 */
     @Operation(summary = "성적 삭제")
     @DeleteMapping("/{scoreNo}")
-    public ResponseEntity<Response> deleteScore(@PathVariable Long scoreNo) {
+    public ResponseEntity<Response> deleteScore(@PathVariable("scoreNo") Long scoreNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 

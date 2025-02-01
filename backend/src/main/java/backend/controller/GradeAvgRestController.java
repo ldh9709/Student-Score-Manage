@@ -30,11 +30,10 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/gradeAvg")
 public class GradeAvgRestController {
-	
-	@Autowired
-	private GradeAvgService gradeAvgService;
-	
-	
+    
+    @Autowired
+    private GradeAvgService gradeAvgService;
+    
     /* 공통 HttpHeaders 생성 메서드 */
     private HttpHeaders createHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
@@ -46,10 +45,10 @@ public class GradeAvgRestController {
     private ResponseEntity<Response> createResponse(Response response, HttpHeaders headers, HttpStatus status) {
         return new ResponseEntity<>(response, headers, status);
     }
-    
-	/* 학년 평균 추가 */
-	@Operation(summary = "학년 평균 추가")
-	@PostMapping
+
+    /* 학년 평균 추가 */
+    @Operation(summary = "학년 평균 추가")
+    @PostMapping
     public ResponseEntity<Response> saveGradeAvg(@RequestBody GradeAvgDto gradeAvgDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
@@ -61,16 +60,15 @@ public class GradeAvgRestController {
 
         return createResponse(response, headers, HttpStatus.CREATED);
     }
-	
-	/* 학년 평균 수정 */
+
+    /* 학년 평균 수정 */
     @Operation(summary = "학년 평균 수정")
     @PutMapping("/{gradeAvgNo}")
-    public ResponseEntity<Response> updateGradeAvg(@PathVariable Long gradeAvgNo, @RequestBody GradeAvgDto gradeAvgDto) {
+    public ResponseEntity<Response> updateGradeAvg(@PathVariable("gradeAvgNo") Long gradeAvgNo, @RequestBody GradeAvgDto gradeAvgDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
         GradeAvg updatedGradeAvg = gradeAvgService.updateGradeAvg(gradeAvgDto);
-        
         GradeAvgDto updatedGradeAvgDto = GradeAvgDto.toDto(updatedGradeAvg);
 
         response.setStatus(ResponseStatusCode.UPDATED_GRADE_AVG_SUCCESS);
@@ -79,11 +77,11 @@ public class GradeAvgRestController {
 
         return createResponse(response, headers, HttpStatus.OK);
     }
-	
-	/* 학년 평균 조회 */
+
+    /* 학년 평균 조회 */
     @Operation(summary = "학년 평균 조회")
     @GetMapping("/{gradeAvgNo}")
-    public ResponseEntity<Response> getGradeAvg(@PathVariable Long gradeAvgNo) {
+    public ResponseEntity<Response> getGradeAvg(@PathVariable("gradeAvgNo") Long gradeAvgNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -115,10 +113,10 @@ public class GradeAvgRestController {
         return createResponse(response, headers, HttpStatus.OK);
     }
     
-	/* 학년 평균 삭제 */
+    /* 학년 평균 삭제 */
     @Operation(summary = "학년 평균 삭제")
     @DeleteMapping("/{gradeAvgNo}")
-    public ResponseEntity<Response> deleteGradeAvg(@PathVariable Long gradeAvgNo) {
+    public ResponseEntity<Response> deleteGradeAvg(@PathVariable("gradeAvgNo") Long gradeAvgNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -128,5 +126,5 @@ public class GradeAvgRestController {
         response.setMessage(ResponseMessage.DELETED_GRADE_AVG_SUCCESS);
 
         return createResponse(response, headers, HttpStatus.NO_CONTENT);
-    }
+    }    
 }

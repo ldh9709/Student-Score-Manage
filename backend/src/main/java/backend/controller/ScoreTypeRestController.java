@@ -30,11 +30,10 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/scoreType")
 public class ScoreTypeRestController {
-	
-	@Autowired
-	private ScoreTypeService scoreTypeService;
-	
-	
+
+    @Autowired
+    private ScoreTypeService scoreTypeService;
+
     /* 공통 HttpHeaders 생성 메서드 */
     private HttpHeaders createHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
@@ -46,10 +45,10 @@ public class ScoreTypeRestController {
     private ResponseEntity<Response> createResponse(Response response, HttpHeaders headers, HttpStatus status) {
         return new ResponseEntity<>(response, headers, status);
     }
-    
-	/* 시험 유형 추가 */
-	@Operation(summary = "시험 유형 추가")
-	@PostMapping
+
+    /* 시험 유형 추가 */
+    @Operation(summary = "시험 유형 추가")
+    @PostMapping
     public ResponseEntity<Response> saveScoreType(@RequestBody ScoreTypeDto scoreTypeDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
@@ -61,11 +60,11 @@ public class ScoreTypeRestController {
 
         return createResponse(response, headers, HttpStatus.CREATED);
     }
-	
-	/* 시험 유형 수정 */
+
+    /* 시험 유형 수정 */
     @Operation(summary = "시험 유형 수정")
     @PutMapping("/{scoreTypeNo}")
-    public ResponseEntity<Response> updateScoreType(@PathVariable Long scoreTypeNo, @RequestBody ScoreTypeDto scoreTypeDto) {
+    public ResponseEntity<Response> updateScoreType(@PathVariable("scoreTypeNo") Long scoreTypeNo, @RequestBody ScoreTypeDto scoreTypeDto) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -78,11 +77,11 @@ public class ScoreTypeRestController {
 
         return createResponse(response, headers, HttpStatus.OK);
     }
-	
-	/* 시험 유형 조회 */
+
+    /* 시험 유형 조회 */
     @Operation(summary = "시험 유형 조회")
     @GetMapping("/{scoreTypeNo}")
-    public ResponseEntity<Response> getScoreType(@PathVariable Long scoreTypeNo) {
+    public ResponseEntity<Response> getScoreType(@PathVariable("scoreTypeNo") Long scoreTypeNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
@@ -113,11 +112,11 @@ public class ScoreTypeRestController {
 
         return createResponse(response, headers, HttpStatus.OK);
     }
-    
-	/* 시험 유형 삭제 */
+
+    /* 시험 유형 삭제 */
     @Operation(summary = "시험 유형 삭제")
     @DeleteMapping("/{scoreTypeNo}")
-    public ResponseEntity<Response> deleteScoreType(@PathVariable Long scoreTypeNo) {
+    public ResponseEntity<Response> deleteScoreType(@PathVariable("scoreTypeNo") Long scoreTypeNo) {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 

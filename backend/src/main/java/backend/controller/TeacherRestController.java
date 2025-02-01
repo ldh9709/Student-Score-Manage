@@ -61,7 +61,7 @@ public class TeacherRestController {
 	/* 회원 수정 */
 	@Operation(summary = "회원수정")
 	@PutMapping("/updateMember")
-	public ResponseEntity<Response> updateMember(@RequestBody TeacherDto teacherDto) {
+	public ResponseEntity<Response> updateMember(@PathVariable("teacherNo") Long teacherNo, @RequestBody TeacherDto teacherDto) {
 		
 		//반환 객체 설정
 		Response response = new Response();
@@ -91,7 +91,7 @@ public class TeacherRestController {
 	/* 회원 조회 */
 	@Operation(summary = "회원 조회")
 	@GetMapping("/getMember")
-	public ResponseEntity<Response> getMember(@PathVariable Long teacherNo) {
+	public ResponseEntity<Response> getMember(@PathVariable("teacherNo") Long teacherNo) {
 		
 		//반환 객체 설정
 		Response response = new Response();
@@ -121,7 +121,7 @@ public class TeacherRestController {
 	/* 회원 조회 */
 	@Operation(summary = "회원 삭제")
 	@DeleteMapping("/deleteMember")
-	public ResponseEntity<Response> deleteMember(@PathVariable Long teacherNo) {
+	public ResponseEntity<Response> deleteMember(@PathVariable("teacherNo") Long teacherNo) {
 		
 		//반환 객체 설정
 		Response response = new Response();
