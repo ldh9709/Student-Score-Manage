@@ -1,6 +1,6 @@
 package backend.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class Student {
     private String studentGender;
 
     @Column(name = "student_birthday")
-    private LocalDateTime studentBirthday;
+    private LocalDate studentBirthday;
 
     @Column(name = "student_grade")
     private String studentGrade; // FK가 아니라 문자열로 처리
@@ -61,7 +61,7 @@ public class Student {
     private String studentSchool;
 
     @Column(name = "student_registration_date")
-    private LocalDateTime studentRegistrationDate;
+    private LocalDate studentRegistrationDate;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     @Builder.Default
