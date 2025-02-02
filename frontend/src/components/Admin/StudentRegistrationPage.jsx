@@ -1,9 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../css/RegistrationPage.css";
+import * as studentApi from "../../api/studentApi";
 
 const StudentRegistrationPage = () => {
+  // 학생 정보 상태 관리
+  const [student, setStudent] = useState({
+    studentName: "",
+    studentGender: "",
+    studentSchool: "",
+    studentBirthday: "",
+    studentGrade: "",
+    studentRegistrationDate: "",
+    studentParentPhone: "",
+    studentPhone: "",
+  });
 
+  const handleChange = (e) => {
+    const { name, value } = e.target; // 구조 분해 할당
+    setStudent((prevStudent) => ({
+      ...prevStudent,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // 기본 폼 제출 이벤트 방지
   
+    try {
+      await studentApi.saveStudent(student); // API 호출
+      
+      // 입력 필드 초기화
+      setStudent({
+        studentName: "",
+        studentGender: "",
+        studentSchool: "",
+        studentBirthday: "",
+        studentGrade: "",
+        studentRegistrationDate: "",
+        studentParentPhone: "",
+        studentPhone: "",
+      });
+    } catch (error) {
+      console.error("Error saving student:", error); // 콘솔에 에러 출력
+      alert("학생 등록에 실패했습니다."); // 실패 알림
+    }
+  };
 
   return (
     <div className="student-registration-content">
