@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../css/StudentManagePage.css";
+import * as studentApi from "../../api/studentApi";
 
-const students = [
-  { id: 1, grade: "1학년", name: "김철수", school: "서울초등학교"},
-  { id: 2, grade: "2학년", name: "이영희", school: "부산초등학교"},
-];
 
 const StudentManagePage = ({ setActiveTab }) => {
+  
+  //학생 데이터 상태 관리
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true); // 데이터 로딩 상태
+  
+  //학생 리스트 가져오기
+  const getStudentList = async () => {
+    const responseJsonObject = await studentApi.getStudentList();
+    setStudents(responseJsonObject.data);
+    setLoading(false);
+  }
+  
+  //처음 렌더링될 때 학생 리스트 가져오기 실행
+  useEffect(() => {
+    getStudentList();
+  }, []);
+
   const handleStudentClick = () => {
     setActiveTab("student-registration"); // 클릭 시 탭 상태를 변경
-  };
+};
+
 
   return (
     <div className="student-manage-content">
@@ -25,10 +40,10 @@ const StudentManagePage = ({ setActiveTab }) => {
           </thead>
           <tbody>
             {students.map((student) => (
-              <tr key={student.id} onClick={handleStudentClick} className="clickable-row">
-                <td>{student.grade}</td>
-                <td>{student.name}</td>
-                <td>{student.school}</td>
+              <tr key={student.studentNo} onClick={handleStudentClick} className="clickable-row">
+                <td>{student.studentGrade}</td>
+                <td>{student.studentName}</td>
+                <td>{student.studentSchool}</td>
               </tr>
             ))}
           </tbody>

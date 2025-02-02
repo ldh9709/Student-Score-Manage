@@ -2,6 +2,9 @@ import React from "react";
 import "../../css/RegistrationPage.css";
 
 const StudentRegistrationPage = () => {
+
+  
+
   return (
     <div className="student-registration-content">
       <h2>학생 등록</h2>
