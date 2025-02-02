@@ -1,6 +1,6 @@
 package backend.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import backend.entity.Student;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class StudentDto {
 	
 	private String studentGender;
 	
-	private LocalDateTime studentBirthday;
+	private LocalDate studentBirthday;
 	
 	private String studentGrade;
 	
@@ -34,7 +34,7 @@ public class StudentDto {
 	
 	private String studentSchool;
 	
-	private LocalDateTime studentRegistrationDate;
+	private LocalDate studentRegistrationDate;
 	
     public static StudentDto toDto(Student student) {
         return StudentDto.builder()

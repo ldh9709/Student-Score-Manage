@@ -21,31 +21,30 @@ INSERT INTO subject (subject_no, subject_name) VALUES (5, '사회');
 -- ScoreType 데이터 삽입
 INSERT INTO score_type (score_type_no, score_type_name) VALUES (1, '중간고사');
 INSERT INTO score_type (score_type_no, score_type_name) VALUES (2, '기말고사');
-
 -- Student 데이터 삽입
 INSERT INTO student (student_no, student_name, student_gender, student_birthday, student_grade,
     student_phone, student_parent_phone, student_address, student_detail_address, student_school, student_registration_date) 
-VALUES (1, '김철수', 'M', '2007-05-10 00:00:00', '초등 1학년', '010-1111-2222', '010-3333-4444', '서울특별시 강남구 강남아파트', '110동 101호', '서울초등학교', '2024-01-01 00:00:00');
+VALUES (1, '김철수', 'M', TO_DATE('2007-05-10', 'YYYY-MM-DD'), '초등 1학년', '010-1111-2222', '010-3333-4444', '서울특별시 강남구 강남아파트', '110동 101호', '서울초등학교', TO_DATE('2024-01-01', 'YYYY-MM-DD'));
 
 INSERT INTO student (student_no, student_name, student_gender, student_birthday, student_grade,
     student_phone, student_parent_phone, student_address, student_detail_address, student_school, student_registration_date) 
-VALUES (2, '이영희', 'F', '2006-08-21 00:00:00', '초등 2학년', '010-2222-3333', '010-4444-5555', '부산광역시 해운대구 해운대아파트', '110동 202호', '부산초등학교', '2024-01-02 00:00:00');
+VALUES (2, '이영희', 'F', TO_DATE('2006-08-21', 'YYYY-MM-DD'), '초등 2학년', '010-2222-3333', '010-4444-5555', '부산광역시 해운대구 해운대아파트', '110동 202호', '부산초등학교', TO_DATE('2024-01-02', 'YYYY-MM-DD'));
 
 INSERT INTO student (student_no, student_name, student_gender, student_birthday, student_grade,
     student_phone, student_parent_phone, student_address, student_detail_address, student_school, student_registration_date) 
-VALUES (3, '박민수', 'M', '2005-11-15 00:00:00', '초등 3학년', '010-3333-4444', '010-5555-6666', '대구광역시 중구아파트', '110동 303호', '대구초등학교', '2024-01-03 00:00:00');
+VALUES (3, '박민수', 'M', TO_DATE('2005-11-15', 'YYYY-MM-DD'), '초등 3학년', '010-3333-4444', '010-5555-6666', '대구광역시 중구아파트', '110동 303호', '대구초등학교', TO_DATE('2024-01-03', 'YYYY-MM-DD'));
 
 INSERT INTO student (student_no, student_name, student_gender, student_birthday, student_grade,
     student_phone, student_parent_phone, student_address, student_detail_address, student_school, student_registration_date) 
-VALUES (4, '정다혜', 'F', '2007-03-05 00:00:00', '초등 1학년', '010-4444-5555', '010-6666-7777', '광주광역시 서구아파트', '110동 404호', '서울초등학교', '2024-01-04 00:00:00');
+VALUES (4, '정다혜', 'F', TO_DATE('2007-03-05', 'YYYY-MM-DD'), '초등 1학년', '010-4444-5555', '010-6666-7777', '광주광역시 서구아파트', '110동 404호', '서울초등학교', TO_DATE('2024-01-04', 'YYYY-MM-DD'));
 
 INSERT INTO student (student_no, student_name, student_gender, student_birthday, student_grade,
     student_phone, student_parent_phone, student_address, student_detail_address, student_school, student_registration_date) 
-VALUES (5, '홍길동', 'M', '2006-09-12 00:00:00', '초등 2학년', '010-5555-6666', '010-7777-8888', '인천광역시 연수구아파트', '110동 505호', '서울초등학교', '2024-01-05 00:00:00');
+VALUES (5, '홍길동', 'M', TO_DATE('2006-09-12', 'YYYY-MM-DD'), '초등 2학년', '010-5555-6666', '010-7777-8888', '인천광역시 연수구아파트', '110동 505호', '서울초등학교', TO_DATE('2024-01-05', 'YYYY-MM-DD'));
 
 INSERT INTO student (student_no, student_name, student_gender, student_birthday, student_grade,
     student_phone, student_parent_phone, student_address, student_detail_address, student_school, student_registration_date) 
-VALUES (6, '김미진', 'F', '2005-07-30 00:00:00', '초등 3학년', '010-6666-7777', '010-8888-9999', '대전광역시 유성구아파트', '110동 606호', '서울초등학교', '2024-01-06 00:00:00');
+VALUES (6, '김미진', 'F', TO_DATE('2005-07-30', 'YYYY-MM-DD'), '초등 3학년', '010-6666-7777', '010-8888-9999', '대전광역시 유성구아파트', '110동 606호', '서울초등학교', TO_DATE('2024-01-06', 'YYYY-MM-DD'));
 
 -- Score 데이터 삽입
 INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) VALUES (1, 85, 'B', 1, 1, 1);
