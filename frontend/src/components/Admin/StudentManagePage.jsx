@@ -12,6 +12,7 @@ const StudentManagePage = ({ setActiveTab }) => {
   //학생 리스트 가져오기
   const getStudentList = async () => {
     const responseJsonObject = await studentApi.getStudentList();
+    console.log("getStudentList responseJsonObject : ", responseJsonObject);
     setStudents(responseJsonObject.data);
     setLoading(false);
   }
