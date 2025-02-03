@@ -23,5 +23,8 @@ public interface ScoreService {
 	//성적 리스트
 	List<Score> getScoreList();
 	
+	//특정 학생 성적 리스트
+	List<ScoreDto> getScoreListByStudentNo(Long studentNo);
+	
 	
 }

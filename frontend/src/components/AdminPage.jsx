@@ -8,7 +8,8 @@ import ScoreRegistrationPage from "./Admin/ScoreRegistrationPage";
 import SubjectsRegistrationPage from "./Admin/SubjectsRegistrationPage";
 const AdminPage = () => {
   const [activeTab, setActiveTab] = useState("main");
-
+  const [selectedStudentNo, setSelectedStudentNo] = useState(null);
+  
   // 탭 클릭 시 실행되는 함수
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -32,8 +33,8 @@ const AdminPage = () => {
       <div className="admin-content">
         {activeTab === "main" && <AdminMainPage />}
         {activeTab === "student-registration" && <StudentRegistrationPage />}
-        {activeTab === "student-manage" && <StudentManagePage setActiveTab={setActiveTab} />}
-        {activeTab === "score-manage" && <ScoreManagePage />}
+        {activeTab === "student-manage" && (<StudentManagePage setActiveTab={setActiveTab} setSelectedStudentNo={setSelectedStudentNo} /> )}
+        {activeTab === "score-manage" && (<ScoreManagePage selectedStudentNo={selectedStudentNo} />)}
         {activeTab === "score-registration" && <ScoreRegistrationPage />}
         {activeTab === "subjects-registration" && <SubjectsRegistrationPage />}
       </div>

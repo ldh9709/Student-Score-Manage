@@ -119,4 +119,20 @@ public class ScoreRestController {
 
         return createResponse(response, headers, HttpStatus.NO_CONTENT);
     }
+    
+    /* 학생 성적 리스트 조회 */
+    @Operation(summary = "학생 성적 리스트 조회")    
+    @GetMapping("/student/{studentNo}")
+    public ResponseEntity<Response> getScoreListByStudentNo(@PathVariable("studentNo") Long studentNo) {
+    	Response response = new Response();
+        HttpHeaders headers = createHttpHeaders();
+        
+        List<ScoreDto> scoreList = scoreService.getScoreListByStudentNo(studentNo);
+        
+        response.setStatus(ResponseStatusCode.GET_SCORE_LIST_SUCCESS);
+        response.setMessage(ResponseMessage.GET_SCORE_LIST_SUCCESS);
+        response.setData(scoreList);
+        
+    	return createResponse(response, headers, HttpStatus.OK);
+    }
 }

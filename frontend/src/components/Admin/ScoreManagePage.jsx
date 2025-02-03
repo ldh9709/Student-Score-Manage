@@ -1,49 +1,87 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../css/ScoreManagePage.css";
 import { Radar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import "../../css/ScoreManagePage.css";
+import {  Chart as ChartJS,  RadialLinearScale,  PointElement,  LineElement,  Filler,  Tooltip,  Legend,} from "chart.js";
+import { useParams } from "react-router-dom";
+
+import * as scoreApi from "../../api/scoreApi";
+import * as subjectApi from "../../api/subjectApi";
+import * as studentApi from "../../api/studentApi";
 
 // Chart.js에 필요한 컴포넌트를 등록
-ChartJS.register(
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend
-);
+ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-const student = {
-  id: 1,
-  grade: "1학년",
-  name: "김철수",
-  school: "서울초등학교",
-  address: "서울특별시 강남구 테헤란로 123",
-  dob: "2012-05-15",
-  parentPhone: "010-1234-5678",
-  phone: "010-1234-5678",
-  kor: 90,
-  math: 80,
-  society: 90,
-  science: 70,
-  eng: 80,
-};
+const ScoreManagePage = ({ selectedStudentNo }) => {
+  // URL에서 특정 학생 NO 가져오기
+  const { studentNo } = useParams();
+  console.log("StudentNo : ", studentNo);
 
-const ScoreManagePage = () => {
-  const avg = (
-    (student.kor + student.math + student.society + student.science + student.eng) /
-    5
-  ).toFixed(2);
+  const studentId = selectedStudentNo || studentNo; // selectedStudentNo가 있으면 그것을 우선 사용
+  console.log("StudentId : ", studentId);
 
+  // 학생 정보 가져오기
+  const [student, setStudent] = useState(null);
+  console.log("Student : ", student);
+
+  // 성적 정보 가져오기
+  const [scores, setScores] = useState([]);
+
+  // 과목 정보 가져오기
+  const [subjects, setSubjects] = useState({});
+
+  // 성적 유형 정보 가져오기
+  const midtermScores = scores.filter((score) => score.scoreTypeNo === 1); // 중간고사
+  const finalScores = scores.filter((score) => score.scoreTypeNo === 2); // 기말고사
+
+  useEffect(() => {
+    if (!selectedStudentNo) return; // 학생이 선택되지 않았다면 실행 X
+
+    const getStudentByStudentNo = async () => {
+      try {
+        const studentData = await studentApi.getStudentByStudentNo(studentId);
+        setStudent(studentData.data);
+      } catch (error) {
+        console.error("학생 정보 불러오기 오류:", error);
+      }
+    };
+
+    const getScoreListByStudentNo = async () => {
+      try {
+        const studentScores = await scoreApi.getScoreListByStudentNo(studentId);
+        setScores(studentScores.data);
+        console.log("studentScores : ", studentScores)
+      } catch (error) {
+        console.error("학생 성적 불러오기 오류 : ", error);
+      }
+    };
+
+    getStudentByStudentNo();
+    getScoreListByStudentNo();
+  }, [studentId]);
+
+  useEffect(() => {
+    const getSubjectList = async () => {
+      try {
+        const responseJsonObject = await subjectApi.getSubjectList();
+        const subjectMap = {};
+        responseJsonObject.data.forEach((subject) => {
+          subjectMap[subject.subjectNo] = subject.subjectName;
+        });
+        setSubjects(subjectMap);
+      } catch (error) {
+        console.error("error getSubjectList : ", error);
+      }
+    };
+
+    getSubjectList();
+  }, []);
+
+  const avg =
+    scores.length > 0
+      ? (scores.reduce((acc, score) => acc + score.scoreValue, 0) / scores.length).toFixed(2)
+      : "N/A"; // 성적 데이터 없을 때 대비
+
+  // 표 옵션
   const radarOptions = {
     scales: {
       r: {
@@ -67,27 +105,32 @@ const ScoreManagePage = () => {
       },
     },
   };
-  
+
   const radarData = {
-    labels: ["국어", "수학", "사회", "과학", "영어"],
+    labels: Object.values(subjects), // 과목명 리스트
     datasets: [
       {
-        label: "중간고사",
-        data: [88, 98, 80, 90, 88],
-        backgroundColor: "rgba(255, 99, 132, 0.2)",
-        borderColor: "rgba(255, 99, 132, 1)",
+        label: "중간고사 성적",
+        data: Object.keys(subjects).map(
+          (subjectNo) =>
+            midtermScores.find((score) => score.subjectNo == subjectNo)?.scoreValue || 0
+        ),
+        backgroundColor: "rgba(54, 162, 235, 0.2)", // 파란색
+        borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
       },
       {
-        label: "기말고사",
-        data: [80, 99, 90, 99, 95],
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
+        label: "기말고사 성적",
+        data: Object.keys(subjects).map(
+          (subjectNo) =>
+            finalScores.find((score) => score.subjectNo == subjectNo)?.scoreValue || 0
+        ),
+        backgroundColor: "rgba(255, 99, 132, 0.2)", // 빨간색
+        borderColor: "rgba(255, 99, 132, 1)",
         borderWidth: 1,
       },
     ],
   };
-
 
   return (
     <div className="score-manage-container">
@@ -96,89 +139,55 @@ const ScoreManagePage = () => {
         <tbody>
           <tr>
             <td className="label-cell">이름</td>
-            <td className="value-cell">{student.name}</td>
+            <td className="value-cell">{student?.studentName || "로딩 중..."}</td>
             <td className="label-cell">학년</td>
-            <td className="value-cell">{student.grade}</td>
+            <td className="value-cell">{student?.studentGrade || "로딩 중..."}</td>
           </tr>
           <tr>
             <td className="label-cell">학교</td>
-            <td className="value-cell">{student.school}</td>
+            <td className="value-cell">{student?.studentSchool || "로딩 중..."}</td>
             <td className="label-cell">주소</td>
-            <td className="value-cell">{student.address}</td>
+            <td className="value-cell">{student?.studentAddress || "로딩 중..."}</td>
           </tr>
           <tr>
             <td className="label-cell">생년월일</td>
-            <td className="value-cell">{student.dob}</td>
+            <td className="value-cell">{student?.studentBirthday || "로딩 중..."}</td>
             <td className="label-cell">등록일</td>
-            <td className="value-cell">{student.dob}</td>
+            <td className="value-cell">{student?.studentRegistrationDate || "로딩 중..."}</td>
           </tr>
           <tr>
             <td className="label-cell">부모 연락처</td>
-            <td className="value-cell">{student.parentPhone}</td>
+            <td className="value-cell">{student?.studentParentPhone || "로딩 중..."}</td>
             <td className="label-cell">학생 연락처</td>
-            <td className="value-cell">{student.phone}</td>
+            <td className="value-cell">{student?.studentPhone || "로딩 중..."}</td>
           </tr>
-          </tbody>
+        </tbody>
       </table>
-      
-      <br/>
+
+      <br />
 
       <table className="table-container">
-        <tbody>
+        <thead>
           <tr>
-            <th></th>
-            <th>국어</th>
-            <th>수학</th>
-            <th>사회</th>
-            <th>과학</th>
-            <th>영어</th>
-            <th>총점</th>
-            <th>평균</th>
-          </tr>  
-          <tr>
+            <th>과목</th>
             <th>중간고사 점수</th>
-            <td>{student.kor}/77</td>
-            <td>{student.math}/77</td>
-            <td>{student.society}/80</td>
-            <td>{student.science}/90</td>
-            <td>{student.eng}/88</td>
-            <td>{99}/300</td>
-            <td>{avg}/80</td>
-          </tr>  
-
-          <tr>
-            <th>중간고사 등급</th>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td></td>
-            <td></td>
-          </tr>  
-
-          <tr>
             <th>기말고사 점수</th>
-            <td>{student.kor}/70</td>
-            <td>{student.math}/77</td>
-            <td>{student.society}/66</td>
-            <td>{student.science}/99</td>
-            <td>{student.eng}/95</td>
-            <td>{99}/305</td>
-            <td>{avg}/88</td>
-          </tr>  
+          </tr>
+        </thead>
+        <tbody>
+          {subjects && Object.keys(subjects).map((subjectNo) => {
+            const midterm = scores.find((score) => score.subjectNo == subjectNo && score.scoreTypeNo === 1);
+            const final = scores.find((score) => score.subjectNo == subjectNo && score.scoreTypeNo === 2);
 
-          <tr>
-            <th>기말고사 등급</th>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td></td>
-            <td></td>
-          </tr>  
-          </tbody>
+            return (
+              <tr key={subjectNo}>
+                <td>{subjects[subjectNo]}</td>
+                <td>{midterm ? midterm.scoreValue : "N/A"}</td>
+                <td>{final ? final.scoreValue : "N/A"}</td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
 
       {/* 레이더 차트 추가 */}

@@ -1,6 +1,7 @@
 package backend.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,6 +104,13 @@ public class ScoreServiceImpl implements ScoreService {
 	@Override
 	public List<Score> getScoreList() {
 		return scoreRepository.findAll();
+	}
+
+	@Override
+	public List<ScoreDto> getScoreListByStudentNo(Long studentNo) {
+		return scoreRepository.findByStudentStudentNo(studentNo)
+				.stream().map(ScoreDto::toDto)
+				.collect(Collectors.toList());
 	}
 	
 }

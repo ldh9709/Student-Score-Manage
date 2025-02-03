@@ -2,6 +2,8 @@ import React from "react";
 import "../../css/RegistrationPage.css";
 
 const ScoreRegistrationPage = () => {
+  
+
   return (
     <div className="score-registration-content">
       <h2>점수 등록</h2>

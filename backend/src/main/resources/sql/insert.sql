@@ -51,15 +51,24 @@ VALUES (student_no_SEQ.nextval, '김미진', 'F', TO_DATE('2005-07-30', 'YYYY-MM
 INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
 VALUES (score_no_SEQ.nextval, 85, 'B', 1, 1, 1);
 INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
-VALUES (score_no_SEQ.nextval, 90, 'A', 2, 2, 2);
+VALUES (score_no_SEQ.nextval, 90, 'A', 1, 2, 1);
 INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
-VALUES (score_no_SEQ.nextval, 70, 'C', 3, 3, 1);
+VALUES (score_no_SEQ.nextval, 70, 'C', 1, 3, 1);
 INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
-VALUES (score_no_SEQ.nextval, 95, 'A+', 4, 4, 2);
+VALUES (score_no_SEQ.nextval, 95, 'A+', 1, 4, 1);
 INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
-VALUES (score_no_SEQ.nextval, 60, 'D', 5, 5, 1);
+VALUES (score_no_SEQ.nextval, 60, 'D', 1, 5, 1);
+
 INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
-VALUES (score_no_SEQ.nextval, 80, 'B+', 6, 1, 2);
+VALUES (score_no_SEQ.nextval, 99, 'B', 1, 1, 2);
+INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
+VALUES (score_no_SEQ.nextval, 55, 'A', 1, 2, 2);
+INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
+VALUES (score_no_SEQ.nextval, 88, 'C', 1, 3, 2);
+INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
+VALUES (score_no_SEQ.nextval, 96, 'A+', 1, 4, 2);
+INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
+VALUES (score_no_SEQ.nextval, 80, 'D', 1, 5, 2);
 
 -- GradeAvg 데이터 삽입
 INSERT INTO grade_avg (grade_avg_no, grade_avg_value, subject_no, score_type_no) 

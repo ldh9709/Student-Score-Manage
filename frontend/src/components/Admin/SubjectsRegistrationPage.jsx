@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../css/RegistrationPage.css";
+import * as subjectApi from "../../api/subjectApi";
 
-const subjects = [
-  { id: 1, name: "국어", number: "1" },
-  { id: 2, name: "수학", number: "2" },
-  { id: 3, name: "사회", number: "3" },
-  { id: 4, name: "과학", number: "4" },
-];
 
 const SubjectsRegistrationPage = ({ setActiveTab }) => {
+
+  const [subjectList, setSubjectList] = useState([]);
+
+  const getSubjectList = async () => {
+    try {
+      const responseJsonObject = await subjectApi.getSubjectList();
+      setSubjectList(responseJsonObject.data);
+      console.log("subject responseJsonObject : ", responseJsonObject);
+    } catch (error) {
+      console.error("과목 리스트 불러오기 실패 : ", error);
+    }
+  }
+
+  useEffect(() => {
+    getSubjectList();
+  }, []);
+  
   const handleSubjectClick = () => {
     setActiveTab("subjects-registration"); // 클릭 시 탭 상태를 변경
   };
+
 
   return (
     <div className="subjects-registration-content">
@@ -25,14 +38,14 @@ const SubjectsRegistrationPage = ({ setActiveTab }) => {
             </tr>
           </thead>
           <tbody>
-            {subjects.map((subject) => (
+            {subjectList.map((subject) => (
                 <tr
-                key={subject.id}
+                key={subject.subjectNo}
                 onClick={handleSubjectClick}
                 className="clickable-row"
                 >
-                <td>{subject.number}</td>
-                <td>{subject.name}</td>
+                <td>{subject.subjectNo}</td>
+                <td>{subject.subjectName}</td>
               </tr>
             ))}
           </tbody>

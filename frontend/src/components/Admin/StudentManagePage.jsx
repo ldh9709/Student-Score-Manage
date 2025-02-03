@@ -3,7 +3,7 @@ import "../../css/StudentManagePage.css";
 import * as studentApi from "../../api/studentApi";
 
 
-const StudentManagePage = ({ setActiveTab }) => {
+const StudentManagePage = ({ setActiveTab, setSelectedStudentNo }) => {
   
   //학생 데이터 상태 관리
   const [students, setStudents] = useState([]);
@@ -22,9 +22,10 @@ const StudentManagePage = ({ setActiveTab }) => {
     getStudentList();
   }, []);
 
-  const handleStudentClick = () => {
-    setActiveTab("student-registration"); // 클릭 시 탭 상태를 변경
-};
+  const handleStudentClick = (studentNo) => {
+    setSelectedStudentNo(studentNo); 
+    setActiveTab("score-manage");
+  };
 
 
   return (
@@ -41,7 +42,7 @@ const StudentManagePage = ({ setActiveTab }) => {
           </thead>
           <tbody>
             {students.map((student) => (
-              <tr key={student.studentNo} onClick={handleStudentClick} className="clickable-row">
+              <tr key={student.studentNo} onClick={() => handleStudentClick(student.studentNo)} className="clickable-row">
                 <td>{student.studentGrade}</td>
                 <td>{student.studentName}</td>
                 <td>{student.studentSchool}</td>
