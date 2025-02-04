@@ -1,7 +1,10 @@
 /* 공통 컨테이너 스타일 */
 .student-registration-container,
 .score-registration-container,
-.subjects-registration-content {
+.subjects-registration-content,
+.schools-registration-content,
+.grades-registration-content,
+.scoreTypes-registration-content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,17 +18,31 @@
 .score-registration-form input[type="text"],
 .score-registration-form input[type="date"],
 .subjects-registration-form input[type="text"],
-.subjects-registration-form input[type="date"] {
-  width: 90%; /* 입력 필드 너비 조정 */
+.subjects-registration-form input[type="date"],
+.schools-registration-form input[type="text"],
+.schools-registration-form input[type="date"],
+.grades-registration-form input[type="text"],
+.grades-registration-form input[type="date"],
+.scoreTypes-registration-form input[type="text"],
+.scoreTypes-registration-form input[type="date"] {
+  width: 90%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-/* 저장 및 추가 버튼 스타일 */
+/* 버튼 스타일 추가 */
 .student-registration-form .save-button,
 .score-registration-form .save-button,
-.subjects-registration-content .add-button {
+.subjects-registration-content .add-button,
+.subjects-registration-content .save-button,
+.schools-registration-content .add-button,
+.schools-registration-content .save-button,
+.grades-registration-content .add-button,
+.grades-registration-content .save-button,
+.scoreTypes-registration-content .add-button,
+.scoreTypes-registration-content .save-button,
+.score-manage-container .edit-button {  /* edit-button 추가 */
   width: 150px;
   margin-top: 20px;
   padding: 10px 20px;
@@ -36,21 +53,72 @@
   cursor: pointer;
 }
 
+/* 버튼 hover 스타일 */
 .student-registration-form .save-button:hover,
 .score-registration-form .save-button:hover,
-.subjects-registration-content .add-button:hover {
+.subjects-registration-content .add-button:hover,
+.subjects-registration-content .save-button:hover,
+.schools-registration-content .add-button:hover,
+.schools-registration-content .save-button:hover,
+.grades-registration-content .add-button:hover,
+.grades-registration-content .save-button:hover,
+.scoreTypes-registration-content .add-button:hover,
+.scoreTypes-registration-content .save-button:hover,
+.score-manage-container .edit-button:hover {  /* edit-button hover 추가 */
   background-color: #0056b3;
 }
 
 /* 셀렉트 박스 스타일 */
 .student-registration-form select,
 .score-registration-form select,
-.subjects-registration-form select {
-  width: 97%; /* 다른 입력 필드와 동일한 너비 */
-  padding: 10px; /* 내부 여백을 통일 */
-  border: 1px solid #ccc; /* 테두리 */
-  border-radius: 4px; /* 둥근 모서리 */
-  background-color: white; /* 배경색 */
-  font-size: 16px; /* 글꼴 크기 */
-  box-sizing: border-box; /* 박스 크기 계산 방식 설정 */
+.subjects-registration-form select,
+.schools-registration-form select,
+.grades-registration-form select,
+.scoreTypes-registration-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 16px;
+  box-sizing: border-box;
+  appearance: none;
+}
+
+/* select 요소가 활성화되었을 때 (포커스) */
+.student-registration-form select:focus,
+.score-registration-form select:focus,
+.subjects-registration-form select:focus,
+.schools-registration-form select:focus,
+.grades-registration-form select:focus,
+.scoreTypes-registration-form select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* 비활성화된 버튼 스타일 */
+.subjects-registration-content .save-button:disabled,
+.schools-registration-content .save-button:disabled,
+.grades-registration-content .save-button:disabled,
+.scoreTypes-registration-content .save-button:disabled,
+.score-manage-container .edit-button:disabled {  /* edit-button 비활성화 추가 */
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 추가 입력 필드 스타일 */
+.add-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* 버튼 컨테이너 정렬 */
+.button-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+  gap: 10px;
 }

@@ -11,6 +11,9 @@ public interface ScoreService {
 	//성적 추가
 	Score saveScore(ScoreDto scoreDto);
 	
+	//성적 리스트 추가
+	List<Score> saveScores(List<ScoreDto> scoreDto);
+	
 	//성적 업데이트
 	Score updateScore(ScoreDto scoreDto);
 	
@@ -25,6 +28,8 @@ public interface ScoreService {
 	
 	//특정 학생 성적 리스트
 	List<ScoreDto> getScoreListByStudentNo(Long studentNo);
+	
+	
 	
 	
 }

@@ -1,5 +1,6 @@
 package backend.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,26 @@ public class ScoreServiceImpl implements ScoreService {
 		}
 		
 	}
+
+	@Override
+	public List<Score> saveScores(List<ScoreDto> scoreDtoList) {
+		try {
+			List<Score> savedScores = new ArrayList<>();
+
+			for (ScoreDto scoreDto : scoreDtoList) {
+				Score score = Score.toEntity(scoreDto);
+				savedScores.add(scoreRepository.save(score));
+
+			}
+			return savedScores;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("saveScores fail", e); // 예외 재던짐
+		}
+	}
+	
+	
 
 	@Override
 	public Score updateScore(ScoreDto scoreDto) {
@@ -112,5 +133,8 @@ public class ScoreServiceImpl implements ScoreService {
 				.stream().map(ScoreDto::toDto)
 				.collect(Collectors.toList());
 	}
-	
+
+
+
+
 }

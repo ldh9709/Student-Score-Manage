@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../../css/ScoreManagePage.css";
 import { Radar } from "react-chartjs-2";
-import {  Chart as ChartJS,  RadialLinearScale,  PointElement,  LineElement,  Filler,  Tooltip,  Legend,} from "chart.js";
-import { useParams } from "react-router-dom";
+import { Chart as ChartJS,   RadialLinearScale,    PointElement,  LineElement,    Filler,    Tooltip,    Legend,} from "chart.js";
+import { useNavigate, useParams } from "react-router-dom";
 
 import * as scoreApi from "../../api/scoreApi";
 import * as subjectApi from "../../api/subjectApi";
@@ -11,77 +11,39 @@ import * as studentApi from "../../api/studentApi";
 // Chart.js에 필요한 컴포넌트를 등록
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-const ScoreManagePage = ({ selectedStudentNo }) => {
-  // URL에서 특정 학생 NO 가져오기
+const ScoreManagePage = ({ setActiveTab, selectedStudentNo, setSelectedStudentNo }) => {
+
+  /********************* 상태 관리 ****************************/
+  // URL에서 특정 학생 번호 가져오기
   const { studentNo } = useParams();
-  console.log("StudentNo : ", studentNo);
 
-  const studentId = selectedStudentNo || studentNo; // selectedStudentNo가 있으면 그것을 우선 사용
-  console.log("StudentId : ", studentId);
+  // 선택한 학생 번호 가져오기 (selectedStudentNo가 있으면 우선 사용)
+  const studentId = selectedStudentNo || studentNo;
 
-  // 학생 정보 가져오기
+  // 학생 정보 상태 관리
   const [student, setStudent] = useState(null);
-  console.log("Student : ", student);
 
-  // 성적 정보 가져오기
+  // 학생 성적 상태 관리
   const [scores, setScores] = useState([]);
 
-  // 과목 정보 가져오기
+  // 과목 정보 상태 관리
   const [subjects, setSubjects] = useState({});
 
-  // 성적 유형 정보 가져오기
+  // 성적 유형별 데이터 필터링
   const midtermScores = scores.filter((score) => score.scoreTypeNo === 1); // 중간고사
   const finalScores = scores.filter((score) => score.scoreTypeNo === 2); // 기말고사
 
-  useEffect(() => {
-    if (!selectedStudentNo) return; // 학생이 선택되지 않았다면 실행 X
-
-    const getStudentByStudentNo = async () => {
-      try {
-        const studentData = await studentApi.getStudentByStudentNo(studentId);
-        setStudent(studentData.data);
-      } catch (error) {
-        console.error("학생 정보 불러오기 오류:", error);
-      }
-    };
-
-    const getScoreListByStudentNo = async () => {
-      try {
-        const studentScores = await scoreApi.getScoreListByStudentNo(studentId);
-        setScores(studentScores.data);
-        console.log("studentScores : ", studentScores)
-      } catch (error) {
-        console.error("학생 성적 불러오기 오류 : ", error);
-      }
-    };
-
-    getStudentByStudentNo();
-    getScoreListByStudentNo();
-  }, [studentId]);
-
-  useEffect(() => {
-    const getSubjectList = async () => {
-      try {
-        const responseJsonObject = await subjectApi.getSubjectList();
-        const subjectMap = {};
-        responseJsonObject.data.forEach((subject) => {
-          subjectMap[subject.subjectNo] = subject.subjectName;
-        });
-        setSubjects(subjectMap);
-      } catch (error) {
-        console.error("error getSubjectList : ", error);
-      }
-    };
-
-    getSubjectList();
-  }, []);
-
+  // 전체 평균 점수 계산
   const avg =
     scores.length > 0
       ? (scores.reduce((acc, score) => acc + score.scoreValue, 0) / scores.length).toFixed(2)
       : "N/A"; // 성적 데이터 없을 때 대비
 
-  // 표 옵션
+  //화면 이동
+  const navigate = useNavigate();
+  
+  /********************* 레이더 차트 설정 ****************************/
+  // 차트 옵션 설정
   const radarOptions = {
     scales: {
       r: {
@@ -106,6 +68,7 @@ const ScoreManagePage = ({ selectedStudentNo }) => {
     },
   };
 
+  // 차트 데이터 설정
   const radarData = {
     labels: Object.values(subjects), // 과목명 리스트
     datasets: [
@@ -130,6 +93,63 @@ const ScoreManagePage = ({ selectedStudentNo }) => {
         borderWidth: 1,
       },
     ],
+  };
+  
+  /********************* API 호출 함수 ****************************/
+  // 학생 정보 가져오기
+  const getStudentByStudentNo = async () => {
+    try {
+      const studentData = await studentApi.getStudentByStudentNo(studentId);
+      setStudent(studentData.data);
+    } catch (error) {
+      console.error("학생 정보 불러오기 오류:", error);
+    }
+  };
+
+  // 학생의 성적 가져오기
+  const getScoreListByStudentNo = async () => {
+    try {
+      const studentScores = await scoreApi.getScoreListByStudentNo(studentId);
+      setScores(studentScores.data);
+      console.log("studentScores : ", studentScores);
+    } catch (error) {
+      console.error("학생 성적 불러오기 오류 : ", error);
+    }
+  };
+
+  // 과목 리스트 가져오기
+  const getSubjectList = async () => {
+    try {
+      const responseJsonObject = await subjectApi.getSubjectList();
+      const subjectMap = {};
+      responseJsonObject.data.forEach((subject) => {
+        subjectMap[subject.subjectNo] = subject.subjectName;
+      });
+      setSubjects(subjectMap);
+    } catch (error) {
+      console.error("error getSubjectList : ", error);
+    }
+  };
+
+  /********************* useEffect ****************************/
+  // studentId가 변경될 때마다 실행
+  useEffect(() => {
+    if (!selectedStudentNo) return; // 학생이 선택되지 않았다면 실행 X
+    
+    getStudentByStudentNo();
+    getScoreListByStudentNo();
+  }, [studentId]);
+  
+  // 페이지 로딩 시 최초 실행
+  useEffect(() => {
+    getSubjectList();
+  }, []);
+  
+  /********************* handle 함수 ****************************/
+  
+  const handleStudentClick = (studentNo) => {
+    setSelectedStudentNo(studentNo); 
+    setActiveTab("student-edit");
   };
 
   return (
@@ -195,7 +215,15 @@ const ScoreManagePage = ({ selectedStudentNo }) => {
         <h3>능력치 분석</h3>
         <Radar data={radarData} options={radarOptions} />
       </div>
+      <button 
+        className="edit-button" 
+        onClick={() => student?.studentNo && handleStudentClick(student.studentNo)}  
+        disabled={!student}
+      >
+        학생 정보 수정
+      </button>
     </div>
+    
   );
 };
 

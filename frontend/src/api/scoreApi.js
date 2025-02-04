@@ -46,6 +46,17 @@ export const saveScore = async (scoreData) => {
     }
 };
 
+// 성적 리스트 추가
+export const saveScores = async (scoreData) => {
+    try {
+        const response = await axios.post(`${BACKEND_SERVER}/score/scores`, scoreData);
+        return response.data;
+    } catch (error) {
+        console.error("Error creating score:", error);
+        throw error;
+    }
+};
+
 // 성적 수정
 export const updateScore = async (scoreNo, scoreData) => {
     try {

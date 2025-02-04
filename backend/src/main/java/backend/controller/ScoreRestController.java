@@ -45,12 +45,29 @@ public class ScoreRestController {
         Response response = new Response();
         HttpHeaders headers = createHttpHeaders();
 
-        scoreService.saveScore(scoreDto);
+        Score score = scoreService.saveScore(scoreDto);
 
         response.setStatus(ResponseStatusCode.CREATED_SCORE_SUCCESS);
         response.setMessage(ResponseMessage.CREATED_SCORE_SUCCESS);
+        response.setData(score);
 
         return createResponse(response, headers, HttpStatus.CREATED);
+    }
+    
+    /* 성적 리스트 추가 */
+    @Operation(summary = "성적 리스트 추가")
+    @PostMapping("/scores")
+    public ResponseEntity<Response> saveScores(@RequestBody List<ScoreDto> scoreDtoList) {
+    	Response response = new Response();
+    	HttpHeaders headers = createHttpHeaders();
+    	
+    	List<Score> savedScores = scoreService.saveScores(scoreDtoList);
+    	
+    	response.setStatus(ResponseStatusCode.CREATED_SCORE_SUCCESS);
+    	response.setMessage(ResponseMessage.CREATED_SCORE_SUCCESS);
+    	response.setData(savedScores);
+    	
+    	return createResponse(response, headers, HttpStatus.CREATED);
     }
 
     /* 성적 수정 */
