@@ -1,8 +1,11 @@
 package backend.entity;
 
 import backend.dto.TeacherDto;
+import backend.entity.role.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,12 +39,17 @@ public class Teacher {
 	@Column(name = "teacher_password")
 	private String teacherPassword;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "teacher_role")
+	private Role teacherRole;
+	
 	public static Teacher toEntity(TeacherDto teacherDto) {
 		return Teacher.builder()
 				.teacherNo(teacherDto.getTeacherNo())
 				.teacherName(teacherDto.getTeacherName())
 				.teacherId(teacherDto.getTeacherId())
 				.teacherPassword(teacherDto.getTeacherPassword())
+				.teacherRole(teacherDto.getTeacherRole())
 				.build();
 	}
 	

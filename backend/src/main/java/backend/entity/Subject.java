@@ -39,10 +39,6 @@ public class Subject {
     @Builder.Default
     private List<Score> score = new ArrayList<>();
     
-    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<GradeAvg> gradeAvg = new ArrayList<>();
-    
     public static Subject toEntity(SubjectDto subjectDto) {
     	
         return Subject.builder()

@@ -40,10 +40,6 @@ public class ScoreType {
 	@Builder.Default
 	private List<Score> score = new ArrayList<>();
 
-	@OneToMany(mappedBy = "scoreType", fetch = FetchType.LAZY)
-	@Builder.Default
-	private List<GradeAvg> gradeAvg = new ArrayList<>();
-
 	public static ScoreType toEntity(ScoreTypeDto scoreTypeDto) {
 
 		return ScoreType.builder()

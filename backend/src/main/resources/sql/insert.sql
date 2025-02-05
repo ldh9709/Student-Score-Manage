@@ -69,3 +69,9 @@ INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, 
 VALUES (score_no_SEQ.nextval, 96, 'A+', 1, 4, 2);
 INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
 VALUES (score_no_SEQ.nextval, 80, 'D', 1, 5, 2);
+
+-- Student 데이터 삽입
+INSERT INTO teacher (teacher_no, teacher_name, teacher_id, teacher_password, teacher_role) 
+VALUES (teacher_no_SEQ.nextval, '김선생', 'teacher123', '{bcrypt}$2a$10$QR1jMgiL//gdWLEFVAPt2u4RYOzPCDoIdQ2COWvX60th4unluFACS', 'ROLE_TEACHER');
+
+

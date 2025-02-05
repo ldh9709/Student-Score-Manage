@@ -1,6 +1,7 @@
 package backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import backend.dto.TeacherDto;
@@ -13,12 +14,17 @@ public class TeacherServiceImpl implements TeacherService {
 	@Autowired
 	TeacherRepository teacherRepository;
 	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
 	@Override
 	public Teacher saveTeacher(TeacherDto teacherDto) {
 		
 		try {
 		
 			Teacher teacher = Teacher.toEntity(teacherDto);
+			
+			teacher.setTeacherPassword(passwordEncoder.encode(teacher.getTeacherPassword()));
 			
 			return teacherRepository.save(teacher);
 
@@ -75,6 +81,20 @@ public class TeacherServiceImpl implements TeacherService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("getTeacher fail", e); // 예외 재던짐
+		}
+	}
+
+	@Override
+	public Teacher getTeacherByTeacherId(String teacherId) {
+		try {
+			
+			Teacher findTeacher = teacherRepository.findByTeacherId(teacherId);
+			
+			return findTeacher;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("getTeacherByTeacherId fail", e); // 예외 재던짐
 		}
 	}
 	

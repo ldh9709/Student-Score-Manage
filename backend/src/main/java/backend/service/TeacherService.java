@@ -17,5 +17,8 @@ public interface TeacherService {
 	//회원상세
 	Teacher getTeacher(Long teacherNo);
 	
+	//회원상세
+	Teacher getTeacherByTeacherId(String teacherId);
+	
 	
 }
