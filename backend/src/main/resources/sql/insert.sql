@@ -69,15 +69,3 @@ INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, 
 VALUES (score_no_SEQ.nextval, 96, 'A+', 1, 4, 2);
 INSERT INTO score (score_no, score_value, score_rating, student_no, subject_no, score_type_no) 
 VALUES (score_no_SEQ.nextval, 80, 'D', 1, 5, 2);
-
--- GradeAvg 데이터 삽입
-INSERT INTO grade_avg (grade_avg_no, grade_avg_value, subject_no, score_type_no) 
-VALUES (grade_avg_no_SEQ.nextval, 82, 1, 1);
-INSERT INTO grade_avg (grade_avg_no, grade_avg_value, subject_no, score_type_no) 
-VALUES (grade_avg_no_SEQ.nextval, 87, 2, 1);
-INSERT INTO grade_avg (grade_avg_no, grade_avg_value, subject_no, score_type_no) 
-VALUES (grade_avg_no_SEQ.nextval, 75, 3, 1);
-INSERT INTO grade_avg (grade_avg_no, grade_avg_value, subject_no, score_type_no) 
-VALUES (grade_avg_no_SEQ.nextval, 90, 4, 2);
-INSERT INTO grade_avg (grade_avg_no, grade_avg_value, subject_no, score_type_no) 
-VALUES (grade_avg_no_SEQ.nextval, 65, 5, 2);
