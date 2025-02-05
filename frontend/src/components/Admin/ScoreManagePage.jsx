@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import * as scoreApi from "../../api/scoreApi";
 import * as subjectApi from "../../api/subjectApi";
 import * as studentApi from "../../api/studentApi";
+import * as scoreTypeApi from "../../api/scoreTypeApi";
 
 // Chart.js에 필요한 컴포넌트를 등록
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
@@ -29,7 +30,10 @@ const ScoreManagePage = ({ setActiveTab, selectedStudentNo, setSelectedStudentNo
   // 과목 정보 상태 관리
   const [subjects, setSubjects] = useState({});
 
-  // 성적 유형별 데이터 필터링
+  // 시험 유형 정보 상태 관리
+  const [scoreTypes, setScoreTypes] = useState([]);
+
+  // 시험 유형별 데이터 필터링
   const midtermScores = scores.filter((score) => score.scoreTypeNo === 1); // 중간고사
   const finalScores = scores.filter((score) => score.scoreTypeNo === 2); // 기말고사
 
@@ -117,6 +121,16 @@ const ScoreManagePage = ({ setActiveTab, selectedStudentNo, setSelectedStudentNo
     }
   };
 
+  //시험 유형 가져오기
+  const getScoreTypes = async () => {
+    try {
+      const scoreTypes = await scoreTypeApi.getScoreTypeList();
+      setScoreTypes(scoreTypes.data);
+    } catch (error) {
+      console.error("시험 유형 불러오기 오류 : ", error);
+    }
+  }
+
   // 과목 리스트 가져오기
   const getSubjectList = async () => {
     try {
@@ -143,6 +157,7 @@ const ScoreManagePage = ({ setActiveTab, selectedStudentNo, setSelectedStudentNo
   // 페이지 로딩 시 최초 실행
   useEffect(() => {
     getSubjectList();
+    getScoreTypes();
   }, []);
   
   /********************* handle 함수 ****************************/
@@ -190,23 +205,21 @@ const ScoreManagePage = ({ setActiveTab, selectedStudentNo, setSelectedStudentNo
         <thead>
           <tr>
             <th>과목</th>
-            <th>중간고사 점수</th>
-            <th>기말고사 점수</th>
+            {scoreTypes.map((scoreType) => (
+              <th key={scoreType.scoreTypeNo}>{scoreType.scoreTypeName}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {subjects && Object.keys(subjects).map((subjectNo) => {
-            const midterm = scores.find((score) => score.subjectNo == subjectNo && score.scoreTypeNo === 1);
-            const final = scores.find((score) => score.subjectNo == subjectNo && score.scoreTypeNo === 2);
-
-            return (
-              <tr key={subjectNo}>
-                <td>{subjects[subjectNo]}</td>
-                <td>{midterm ? midterm.scoreValue : "N/A"}</td>
-                <td>{final ? final.scoreValue : "N/A"}</td>
-              </tr>
-            );
-          })}
+          {subjects && Object.keys(subjects).map((subjectNo) => (
+            <tr key={subjectNo}>
+              <td>{subjects[subjectNo]}</td>
+              {scoreTypes.map((scoreType) => {
+                const score = scores.find(score => score.subjectNo == subjectNo && score.scoreTypeNo === scoreType.scoreTypeNo);
+                return <td key={scoreType.scoreTypeNo}>{score ? score.scoreValue : "점수가 없습니다."}</td>;
+              })}
+            </tr>
+          ))}
         </tbody>
       </table>
 

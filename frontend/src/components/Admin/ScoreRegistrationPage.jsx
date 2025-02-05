@@ -6,23 +6,19 @@ import * as subjectApi from "../../api/subjectApi";
 import * as scoreTypeApi from "../../api/scoreTypeApi";
 
 const ScoreRegistrationPage = () => {
-
   /********************* 상태 관리 ****************************/
-  // 학생 목록 저장
-  const [students, setStudents] = useState([]);
-  // 시험 유형 저장
-  const [scoreTypes, setScoreTypes] = useState([]);
-  // 시험 과목 저장
-  const [subjects, setSubjects] = useState([]);
-  // 선택된 학생의 성적을 저장
+  const [students, setStudents] = useState([]);  // 학생 목록
+  const [scoreTypes, setScoreTypes] = useState([]);  // 시험 유형 목록
+  const [subjects, setSubjects] = useState([]);  // 과목 목록
   const [scores, setScores] = useState({
     studentNo: "",
+    studentSchool: "",  // 학교 저장
+    studentGrade: "",  // 학년 저장
     scoreTypeNo: "",
-    scores: {},
+    scores: {}, // 성적 입력 데이터 저장
   });
 
   /********************* API 호출 함수 ****************************/
-  // 학생 목록 가져오기
   const getStudents = async () => {
     try {
       const responseJsonObject = await studentApi.getStudentList();
@@ -32,7 +28,6 @@ const ScoreRegistrationPage = () => {
     }
   };
 
-  // 시험 유형 목록 가져오기
   const getScoreTypes = async () => {
     try {
       const responseJsonObject = await scoreTypeApi.getScoreTypeList();
@@ -42,7 +37,6 @@ const ScoreRegistrationPage = () => {
     }
   };
 
-  // 과목 목록 가져오기
   const getSubjects = async () => {
     try {
       const responseJsonObject = await subjectApi.getSubjectList();
@@ -52,16 +46,39 @@ const ScoreRegistrationPage = () => {
     }
   };
 
+  // 특정 학생의 기존 성적 가져오기
+  const getScoreListByStudentNo = async (studentNo, scoreTypeNo) => {
+    try {
+      const responseJsonObject = await scoreApi.getScoreListByStudentNo(studentNo);
+      const existingScores = responseJsonObject.data;
+
+      // 기존 성적을 { subjectNo: scoreValue } 형식으로 변환
+      const scoresMap = {};
+      existingScores.forEach((score) => {
+        if (score.scoreTypeNo === scoreTypeNo) {
+          scoresMap[score.subjectNo] = score.scoreValue;
+        }
+      });
+
+      // 기존 성적을 scores 상태에 반영
+      setScores((prev) => ({
+        ...prev,
+        scores: scoresMap,
+      }));
+    } catch (error) {
+      console.error("학생 성적 불러오기 실패:", error);
+    }
+  };
+
   /********************* useEffect ****************************/
-  // 페이지 로딩 시 데이터 불러오기
   useEffect(() => {
-    getStudents(); // 학생 목록
-    getScoreTypes(); // 시험 유형 목록
-    getSubjects(); // 과목 목록
+    getStudents();
+    getScoreTypes();
+    getSubjects();
   }, []);
 
   /********************* handle 함수 ****************************/
-  // 학생 선택 시 정보 업데이트
+  // 학생 선택 시 기존 성적 불러오기 + 학교, 학년 정보 저장
   const handleStudentChange = (e) => {
     const selectedStudentNo = e.target.value;
     const selectedStudent = students.find((s) => s.studentNo.toString() === selectedStudentNo);
@@ -70,10 +87,22 @@ const ScoreRegistrationPage = () => {
       setScores((prev) => ({
         ...prev,
         studentNo: selectedStudent.studentNo,
-        studentName: selectedStudent.studentName,
-        studentGrade: selectedStudent.studentGrade,
-        studentSchool: selectedStudent.studentSchool,
+        studentSchool: selectedStudent.studentSchool, // 학교 추가
+        studentGrade: selectedStudent.studentGrade, // 학년 추가
+        scoreTypeNo: "",  // 시험 유형 초기화
+        scores: {}, // 기존 성적 초기화
       }));
+    }
+  };
+
+  // 시험 유형 선택 시 기존 성적 불러오기
+  const handleScoreTypeChange = (e) => {
+    const selectedScoreTypeNo = parseInt(e.target.value);
+    setScores((prev) => ({ ...prev, scoreTypeNo: selectedScoreTypeNo }));
+
+    // 학생이 선택된 상태에서만 기존 성적을 불러옴
+    if (scores.studentNo) {
+      getScoreListByStudentNo(scores.studentNo, selectedScoreTypeNo);
     }
   };
 
@@ -83,8 +112,7 @@ const ScoreRegistrationPage = () => {
 
     setScores((prev) => ({
       ...prev,
-      [name]: name === "scoreTypeNo" ? parseInt(value) : value, // 시험 유형을 정수로 변환하여 저장
-      scores: name !== "scoreTypeNo" ? { ...prev.scores, [name]: parseInt(value) || 0 } : prev.scores,
+      scores: { ...prev.scores, [name]: parseInt(value) || 0 },
     }));
   };
 
@@ -102,8 +130,7 @@ const ScoreRegistrationPage = () => {
     }));
 
     try {
-      const response = await scoreApi.saveScores(scoreData);
-      console.log("성적 등록 완료:", response);
+      await scoreApi.saveScores(scoreData);
       alert("성적 등록 완료!");
     } catch (error) {
       console.error("성적 등록 실패:", error);
@@ -136,7 +163,7 @@ const ScoreRegistrationPage = () => {
               <td><input type="text" name="studentSchool" value={scores.studentSchool} readOnly /></td>
               <td><label>시험 유형</label></td>
               <td>
-                <select name="scoreTypeNo" value={scores.scoreTypeNo || ""} onChange={handleChange}>
+                <select name="scoreTypeNo" value={scores.scoreTypeNo || ""} onChange={handleScoreTypeChange}>
                   <option value="">시험 유형 선택</option>
                   {scoreTypes.map((scoreType) => (
                     <option key={scoreType.scoreTypeNo} value={scoreType.scoreTypeNo}>
@@ -163,6 +190,7 @@ const ScoreRegistrationPage = () => {
                       <input
                         type="text"
                         name={subject.subjectNo}
+                        value={scores.scores[subject.subjectNo] || ""}
                         onChange={handleChange}
                       />
                     </td>
@@ -173,6 +201,7 @@ const ScoreRegistrationPage = () => {
                           <input
                             type="text"
                             name={subjects[index + 1].subjectNo}
+                            value={scores.scores[subjects[index + 1].subjectNo] || ""}
                             onChange={handleChange}
                           />
                         </td>

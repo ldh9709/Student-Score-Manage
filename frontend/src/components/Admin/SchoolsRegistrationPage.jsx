@@ -3,9 +3,13 @@ import "../../css/RegistrationPage.css";
 import * as schoolApi from "../../api/schoolApi";
 
 const SchoolsRegistrationPage = ({ setActiveTab }) => {
+
+  /********************* 상태 관리 ****************************/
   const [schoolList, setSchoolList] = useState([]);
-  const [newSchool, setNewSchool] = useState(""); // 추가할 학교명
-  const [isAdding, setIsAdding] = useState(false); // 새 입력 칸 표시 여부
+  const [newSchool, setNewSchool] = useState(""); 
+  const [isAdding, setIsAdding] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   /********************* API 호출 함수 ****************************/
   const getSchoolList = async () => {
@@ -23,12 +27,8 @@ const SchoolsRegistrationPage = ({ setActiveTab }) => {
   }, []);
 
   /********************* handle 함수 ****************************/
-  const handleSchoolClick = () => {
-    setActiveTab("schools-registration"); // 클릭 시 탭 상태를 변경
-  };
-
   const handleAddRow = () => {
-    setIsAdding(true); // 새 입력 칸 표시
+    setIsAdding(true);
   };
 
   const handleSaveSchool = async () => {
@@ -39,12 +39,28 @@ const SchoolsRegistrationPage = ({ setActiveTab }) => {
 
     try {
       await schoolApi.saveSchool({ schoolName: newSchool });
-      setNewSchool(""); // 입력 필드 초기화
-      setIsAdding(false); // 입력 칸 숨기기
-      getSchoolList(); // 목록 다시 불러오기
+      setNewSchool("");
+      setIsAdding(false);
+      getSchoolList();
     } catch (error) {
       console.error("학교 추가 실패:", error);
     }
+  };
+
+  const handleOpenDeleteModal = (schoolNo) => {
+    setDeleteTarget(schoolNo);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteSchool = async () => {
+    try {
+      await schoolApi.deleteSchool(deleteTarget);
+      getSchoolList();
+    } catch (error) {
+      console.error("학교 삭제 실패:", error);
+    }
+    setIsModalOpen(false);
+    setDeleteTarget(null);
   };
 
   return (
@@ -60,24 +76,17 @@ const SchoolsRegistrationPage = ({ setActiveTab }) => {
           </thead>
           <tbody>
             {schoolList.map((school) => (
-              <tr key={school.schoolNo} onClick={handleSchoolClick} className="clickable-row">
+              <tr key={school.schoolNo} onClick={() => handleOpenDeleteModal(school.schoolNo)} className="clickable-row">
                 <td>{school.schoolNo}</td>
                 <td>{school.schoolName}</td>
               </tr>
             ))}
 
-            {/* 새로운 입력 칸 추가 (isAdding이 true일 때만 보임) */}
             {isAdding && (
               <tr>
                 <td>새 학교</td>
                 <td>
-                  <input
-                    type="text"
-                    value={newSchool}
-                    onChange={(e) => setNewSchool(e.target.value)}
-                    placeholder="학교명을 입력하세요"
-                    className="add-input"
-                  />
+                  <input type="text" value={newSchool} onChange={(e) => setNewSchool(e.target.value)} placeholder="학교명을 입력하세요" className="add-input" />
                 </td>
               </tr>
             )}
@@ -85,16 +94,20 @@ const SchoolsRegistrationPage = ({ setActiveTab }) => {
         </table>
       </div>
 
-      {/* 학교 추가 & 저장 버튼 */}
       <div className="button-container">
-        <button className="add-button" onClick={handleAddRow}>
-          학교 추가
-        </button>
-        &ensp;
-        <button className="save-button" onClick={handleSaveSchool} disabled={!isAdding}>
-          저장
-        </button>
+        <button className="add-button" onClick={handleAddRow}>학교 추가</button>
+        <button className="save-button" onClick={handleSaveSchool} disabled={!isAdding}>저장</button>
       </div>
+
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>이 학교를 삭제하시겠습니까?</p>
+            <button className="confirm-button" onClick={handleDeleteSchool}>삭제</button>
+            <button className="cancel-button" onClick={() => setIsModalOpen(false)}>취소</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

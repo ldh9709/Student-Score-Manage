@@ -3,9 +3,13 @@ import "../../css/RegistrationPage.css";
 import * as subjectApi from "../../api/subjectApi";
 
 const SubjectsRegistrationPage = ({ setActiveTab }) => {
+
+  /********************* 상태 관리 ****************************/
   const [subjectList, setSubjectList] = useState([]);
-  const [newSubject, setNewSubject] = useState(""); // 추가할 과목명
-  const [isAdding, setIsAdding] = useState(false); // 새 입력 칸 표시 여부
+  const [newSubject, setNewSubject] = useState(""); 
+  const [isAdding, setIsAdding] = useState(false); 
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   /********************* API 호출 함수 ****************************/
   const getSubjectList = async () => {
@@ -23,12 +27,8 @@ const SubjectsRegistrationPage = ({ setActiveTab }) => {
   }, []);
 
   /********************* handle 함수 ****************************/
-  const handleSubjectClick = () => {
-    setActiveTab("subjects-registration"); // 클릭 시 탭 상태를 변경
-  };
-
   const handleAddRow = () => {
-    setIsAdding(true); // 새 입력 칸 표시
+    setIsAdding(true);
   };
 
   const handleSaveSubject = async () => {
@@ -39,12 +39,28 @@ const SubjectsRegistrationPage = ({ setActiveTab }) => {
 
     try {
       await subjectApi.saveSubject({ subjectName: newSubject });
-      setNewSubject(""); // 입력 필드 초기화
-      setIsAdding(false); // 입력 칸 숨기기
-      getSubjectList(); // 목록 다시 불러오기
+      setNewSubject("");
+      setIsAdding(false);
+      getSubjectList();
     } catch (error) {
       console.error("과목 추가 실패:", error);
     }
+  };
+
+  const handleOpenDeleteModal = (subjectNo) => {
+    setDeleteTarget(subjectNo);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteSubject = async () => {
+    try {
+      await subjectApi.deleteSubject(deleteTarget);
+      getSubjectList();
+    } catch (error) {
+      console.error("과목 삭제 실패:", error);
+    }
+    setIsModalOpen(false);
+    setDeleteTarget(null);
   };
 
   return (
@@ -60,24 +76,17 @@ const SubjectsRegistrationPage = ({ setActiveTab }) => {
           </thead>
           <tbody>
             {subjectList.map((subject) => (
-              <tr key={subject.subjectNo} onClick={handleSubjectClick} className="clickable-row">
+              <tr key={subject.subjectNo} onClick={() => handleOpenDeleteModal(subject.subjectNo)} className="clickable-row">
                 <td>{subject.subjectNo}</td>
                 <td>{subject.subjectName}</td>
               </tr>
             ))}
 
-            {/* 새로운 입력 칸 추가 (isAdding이 true일 때만 보임) */}
             {isAdding && (
               <tr>
                 <td>새 과목</td>
                 <td>
-                  <input
-                    type="text"
-                    value={newSubject}
-                    onChange={(e) => setNewSubject(e.target.value)}
-                    placeholder="과목명을 입력하세요"
-                    className="add-input"
-                  />
+                  <input type="text" value={newSubject} onChange={(e) => setNewSubject(e.target.value)} placeholder="과목명을 입력하세요" className="add-input" />
                 </td>
               </tr>
             )}
@@ -85,16 +94,20 @@ const SubjectsRegistrationPage = ({ setActiveTab }) => {
         </table>
       </div>
 
-      {/* 과목 추가 & 저장 버튼 */}
       <div className="button-container">
-        <button className="add-button" onClick={handleAddRow}>
-          과목 추가
-        </button>
-        &ensp;
-        <button className="save-button" onClick={handleSaveSubject} disabled={!isAdding}>
-          저장
-        </button>
+        <button className="add-button" onClick={handleAddRow}>과목 추가</button>
+        <button className="save-button" onClick={handleSaveSubject} disabled={!isAdding}>저장</button>
       </div>
+
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>이 과목을 삭제하시겠습니까?</p>
+            <button className="confirm-button" onClick={handleDeleteSubject}>삭제</button>
+            <button className="cancel-button" onClick={() => setIsModalOpen(false)}>취소</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

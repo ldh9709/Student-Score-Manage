@@ -4,8 +4,10 @@ import * as gradeApi from "../../api/gradeApi";
 
 const GradesRegistrationPage = ({ setActiveTab }) => {
   const [gradeList, setGradeList] = useState([]);
-  const [newGrade, setNewGrade] = useState(""); // 추가할 학년명
-  const [isAdding, setIsAdding] = useState(false); // 새 입력 칸 표시 여부
+  const [newGrade, setNewGrade] = useState(""); 
+  const [isAdding, setIsAdding] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   /********************* API 호출 함수 ****************************/
   const getGradeList = async () => {
@@ -17,18 +19,12 @@ const GradesRegistrationPage = ({ setActiveTab }) => {
     }
   };
 
-  /********************* useEffect ****************************/
   useEffect(() => {
     getGradeList();
   }, []);
 
-  /********************* handle 함수 ****************************/
-  const handleGradeClick = () => {
-    setActiveTab("grades-registration"); // 클릭 시 탭 상태를 변경
-  };
-
   const handleAddRow = () => {
-    setIsAdding(true); // 새 입력 칸 표시
+    setIsAdding(true);
   };
 
   const handleSaveGrade = async () => {
@@ -39,12 +35,28 @@ const GradesRegistrationPage = ({ setActiveTab }) => {
 
     try {
       await gradeApi.saveGrade({ gradeName: newGrade });
-      setNewGrade(""); // 입력 필드 초기화
-      setIsAdding(false); // 입력 칸 숨기기
-      getGradeList(); // 목록 다시 불러오기
+      setNewGrade("");
+      setIsAdding(false);
+      getGradeList();
     } catch (error) {
       console.error("학년 추가 실패:", error);
     }
+  };
+
+  const handleOpenDeleteModal = (gradeNo) => {
+    setDeleteTarget(gradeNo);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteGrade = async () => {
+    try {
+      await gradeApi.deleteGrade(deleteTarget);
+      getGradeList();
+    } catch (error) {
+      console.error("학년 삭제 실패:", error);
+    }
+    setIsModalOpen(false);
+    setDeleteTarget(null);
   };
 
   return (
@@ -60,24 +72,17 @@ const GradesRegistrationPage = ({ setActiveTab }) => {
           </thead>
           <tbody>
             {gradeList.map((grade) => (
-              <tr key={grade.gradeNo} onClick={handleGradeClick} className="clickable-row">
+              <tr key={grade.gradeNo} onClick={() => handleOpenDeleteModal(grade.gradeNo)} className="clickable-row">
                 <td>{grade.gradeNo}</td>
                 <td>{grade.gradeName}</td>
               </tr>
             ))}
 
-            {/* 새로운 입력 칸 추가 (isAdding이 true일 때만 보임) */}
             {isAdding && (
               <tr>
                 <td>새 학년</td>
                 <td>
-                  <input
-                    type="text"
-                    value={newGrade}
-                    onChange={(e) => setNewGrade(e.target.value)}
-                    placeholder="학년명을 입력하세요"
-                    className="add-input"
-                  />
+                  <input type="text" value={newGrade} onChange={(e) => setNewGrade(e.target.value)} placeholder="학년명을 입력하세요" className="add-input" />
                 </td>
               </tr>
             )}
@@ -85,16 +90,20 @@ const GradesRegistrationPage = ({ setActiveTab }) => {
         </table>
       </div>
 
-      {/* 학년 추가 & 저장 버튼 */}
       <div className="button-container">
-        <button className="add-button" onClick={handleAddRow}>
-          학년 추가
-        </button>
-        &ensp;
-        <button className="save-button" onClick={handleSaveGrade} disabled={!isAdding}>
-          저장
-        </button>
+        <button className="add-button" onClick={handleAddRow}>학년 추가</button>
+        <button className="save-button" onClick={handleSaveGrade} disabled={!isAdding}>저장</button>
       </div>
+
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>이 학년을 삭제하시겠습니까?</p>
+            <button className="confirm-button" onClick={handleDeleteGrade}>삭제</button>
+            <button className="cancel-button" onClick={() => setIsModalOpen(false)}>취소</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
