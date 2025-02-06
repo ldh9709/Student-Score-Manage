@@ -9,6 +9,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -53,4 +54,9 @@ public class Teacher {
 				.build();
 	}
 	
+	/* 초기값 설정 */
+	@PrePersist
+	public void setDefaultValues() {
+		if (this.teacherRole == null) this.teacherRole = Role.ROLE_TEACHER;
+	}
 }

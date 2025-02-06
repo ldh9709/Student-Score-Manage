@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/teacher")
 public class TeacherRestController {
 	
 	@Autowired
@@ -35,7 +35,7 @@ public class TeacherRestController {
 	
 	/* 회원 가입 */
 	@Operation(summary = "회원가입")
-	@PostMapping("/saveMember")
+	@PostMapping
 	public ResponseEntity<Response> saveMember(@RequestBody TeacherDto teacherDto) {
 		
 		//반환 객체 설정
@@ -60,7 +60,7 @@ public class TeacherRestController {
 	
 	/* 회원 수정 */
 	@Operation(summary = "회원수정")
-	@PutMapping("/updateMember")
+	@PutMapping
 	public ResponseEntity<Response> updateMember(@PathVariable("teacherNo") Long teacherNo, @RequestBody TeacherDto teacherDto) {
 		
 		//반환 객체 설정
@@ -90,7 +90,7 @@ public class TeacherRestController {
 	
 	/* 회원 조회 */
 	@Operation(summary = "회원 조회")
-	@GetMapping("/getMember")
+	@GetMapping
 	public ResponseEntity<Response> getMember(@PathVariable("teacherNo") Long teacherNo) {
 		
 		//반환 객체 설정
@@ -120,7 +120,7 @@ public class TeacherRestController {
 	
 	/* 회원 조회 */
 	@Operation(summary = "회원 삭제")
-	@DeleteMapping("/deleteMember")
+	@DeleteMapping
 	public ResponseEntity<Response> deleteMember(@PathVariable("teacherNo") Long teacherNo) {
 		
 		//반환 객체 설정
