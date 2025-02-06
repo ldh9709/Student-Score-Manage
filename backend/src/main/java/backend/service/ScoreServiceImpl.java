@@ -70,9 +70,6 @@ public class ScoreServiceImpl implements ScoreService {
 			if (scoreDto.getScoreValue() != null) {
 	            score.setScoreValue(scoreDto.getScoreValue());
 	        }
-	        if (scoreDto.getScoreRating() != null) {
-	            score.setScoreRating(scoreDto.getScoreRating());
-	        }
 	        if (scoreDto.getStudentNo() != null) {
 	            score.setStudent(student);
 	        }

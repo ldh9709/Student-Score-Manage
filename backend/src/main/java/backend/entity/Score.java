@@ -36,9 +36,6 @@ public class Score {
 	@Column(name = "score_value")
 	private Integer scoreValue;
 	
-	@Column(name = "score_rating")
-	private String scoreRating;
-	
 	@JoinColumn(name = "student_no")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Student student;
@@ -71,7 +68,6 @@ public class Score {
 	    return Score.builder()
 	            .scoreNo(scoreDto.getScoreNo()) // PK 값 설정 (필요에 따라 null로 설정 가능)
 	            .scoreValue(scoreDto.getScoreValue()) // 점수 설정
-	            .scoreRating(scoreDto.getScoreRating()) // 등급 설정
 	            .student(student) // 연관된 Student 객체 설정
 	            .subject(subject) // 연관된 Subject 객체 설정
 	            .scoreType(scoreType) // 연관된 ScoreType 객체 설정
