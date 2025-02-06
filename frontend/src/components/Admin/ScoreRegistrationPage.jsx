@@ -126,7 +126,6 @@ const ScoreRegistrationPage = () => {
       subjectNo: parseInt(subjectNo),
       scoreTypeNo: scores.scoreTypeNo,
       scoreValue: scores.scores[subjectNo],
-      scoreRating: "B", // 예시 값, 등급 계산 로직 필요
     }));
 
     try {
