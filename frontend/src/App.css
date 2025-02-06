@@ -3,16 +3,20 @@
   display: flex; /* 플렉스 박스 레이아웃 사용 */
   flex-direction: column; /* 헤더와 컨텐츠를 세로 방향으로 배치 */
   min-height: 100vh; /* 화면 전체 높이를 차지 */
-  font-family: "nanumsquare";
+  font-family: 'Pretendard', sans-serif;
+  text-decoration: none;
+  line-height: 1.5;
+
 }
 
 /* 메인 컨텐츠 스타일 */
 .main-content {
-  flex: 1; /* 남은 공간을 모두 차지 */
   display: flex; /* 플렉스 박스 사용 */
   justify-content: center; /* 수평 방향 가운데 정렬 */
   align-items: center; /* 수직 방향 가운데 정렬 */
-  background-color: #f9f9f9; /* 배경색 (선택 사항) */
+  background-color: #fff; /* 배경색 (선택 사항) */
+
+  
 }
 
 /* 고정 크기 콘텐츠 */
@@ -27,4 +31,5 @@
   align-items: center; /* 내부 콘텐츠 수평 가운데 정렬 */
   text-align: center; /* 텍스트 가운데 정렬 */
   padding: 20px; /* 내부 여백 */
+  
 }

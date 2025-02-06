@@ -72,32 +72,28 @@ const ScoreManagePage = ({ setActiveTab, selectedStudentNo, setSelectedStudentNo
     },
   };
 
-  // 차트 데이터 설정
-  const radarData = {
-    labels: Object.values(subjects), // 과목명 리스트
-    datasets: [
-      {
-        label: "중간고사 성적",
-        data: Object.keys(subjects).map(
-          (subjectNo) =>
-            midtermScores.find((score) => score.subjectNo == subjectNo)?.scoreValue || 0
-        ),
-        backgroundColor: "rgba(54, 162, 235, 0.2)", // 파란색
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-      {
-        label: "기말고사 성적",
-        data: Object.keys(subjects).map(
-          (subjectNo) =>
-            finalScores.find((score) => score.subjectNo == subjectNo)?.scoreValue || 0
-        ),
-        backgroundColor: "rgba(255, 99, 132, 0.2)", // 빨간색
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
+// 차트 데이터 설정
+const radarData = {
+  labels: Object.values(subjects), // 과목명 리스트
+  datasets: scoreTypes.map((scoreType) => ({
+    label: scoreType.scoreTypeName, // 시험 유형 이름 (ex: 중간고사, 기말고사 등)
+    data: Object.keys(subjects).map(
+      (subjectNo) =>
+        scores.find(
+          (score) =>
+            score.subjectNo == subjectNo &&
+            score.scoreTypeNo === scoreType.scoreTypeNo
+        )?.scoreValue || 0
+    ),
+    backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
+      Math.random() * 255
+    )}, ${Math.floor(Math.random() * 255)}, 0.2)`, // 랜덤 색상
+    borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
+      Math.random() * 255
+    )}, ${Math.floor(Math.random() * 255)}, 1)`,
+    borderWidth: 1,
+  })),
+};
   
   /********************* API 호출 함수 ****************************/
   // 학생 정보 가져오기

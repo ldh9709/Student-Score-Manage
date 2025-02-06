@@ -1,0 +1,30 @@
+.footer {
+    width: 100%;
+    background-color: #f2f6fd; /* 배경색 */
+    padding: 20px 0;
+    text-align: center;
+    position: relative; /* 👈 absolute 제거 */
+    border-top: 1px solid #c8d7e5; /* 위쪽 경계선 */
+}
+
+.footer-container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #748ba4;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}

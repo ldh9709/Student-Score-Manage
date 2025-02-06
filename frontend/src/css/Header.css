@@ -7,6 +7,8 @@
   background-color: #fff; /* 배경색 설정 */
   border-bottom: 1px solid #ddd; /* 아래쪽 경계선 */
   height: 70px; /* 헤더 높이 */
+  font-size: 20px;
+  font-weight: 500;
 }
 
 /* 로고와 메뉴를 담는 컨테이너 */
@@ -29,10 +31,12 @@
   padding: 0;
   margin-left: 50px;
   text-align: center;
+  
 }
 
 .menu ul li {
   margin-right: 30px; /* 메뉴 항목 간격 */
+
 }
 
 .menu ul li a {

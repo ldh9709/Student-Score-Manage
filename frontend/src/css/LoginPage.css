@@ -1,0 +1,87 @@
+/* 로그인 페이지 전체 컨테이너 */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 70vh;
+    background-color: #ffffff;
+  }
+  
+  /* 로그인 박스 (크기 증가) */
+  .login-box {
+    width: 500px; /* 기존 400px → 500px로 확대 */
+    padding: 30px; /* 내부 여백 증가 */
+    background: white;
+    border-radius: 12px; /* 모서리 둥글게 조정 */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); /* 그림자 약간 강조 */
+    text-align: center;
+  }
+  
+  /* 제목 */
+  .login-box h2 {
+    margin-bottom: 25px;
+    font-size: 24px; /* 기존보다 약간 확대 */
+    color: #333;
+  }
+  
+  /* 입력 그룹 */
+  .input-group {
+    margin-bottom: 20px; /* 입력 필드 간격 조정 */
+    text-align: left;
+  }
+  
+  /* 입력 필드 스타일 */
+  .input-group label {
+    display: block;
+    font-size: 16px; /* 기존 14px → 16px */
+    margin-bottom: 6px;
+    color: #555;
+  }
+  
+  .input-group input {
+    width: 95%; /* 기존 95% → 100% */
+    padding: 12px; /* 입력 필드 크기 증가 */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px; /* 기존보다 폰트 키움 */
+  }
+  
+  /* 로그인 버튼 */
+  .login-button {
+    width: 100%;
+    padding: 12px; /* 버튼 크기 증가 */
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 18px; /* 버튼 폰트 크기 증가 */
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+  
+  .login-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* 회원가입 링크 */
+  .signup-link {
+    margin-top: 20px; /* 여백 조정 */
+    font-size: 16px;
+    color: #777;
+  }
+  
+  .signup-link a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+
+  .error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
