@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BACKEND_SERVER = "http://localhost:8080";
 
-// 학년 리스트 조회
+// 학년 리스트 조회 (✅ GET 요청에서 불필요한 인자 제거)
 export const getGradeList = async (token) => {
     try {
         const response = await axios.get(`${BACKEND_SERVER}/grade`, {
@@ -10,7 +10,7 @@ export const getGradeList = async (token) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
-        }) ;
+        });
         return response.data;
     } catch (error) {
         console.error("Error fetching grade list:", error);
@@ -34,15 +34,18 @@ export const getGradeByGradeNo = async (gradeNo, token) => {
     }
 };
 
-// 학년 추가
+// 학년 추가 (✅ request body 문제 해결)
 export const saveGrade = async (gradeData, token) => {
     try {
-        const response = await axios.post(`${BACKEND_SERVER}/grade`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-        });
+        const response = await axios.post(`${BACKEND_SERVER}/grade`, 
+            gradeData, // ✅ 요청 바디 추가
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
         return response.data;
     } catch (error) {
         console.error("Error creating grade:", error);
@@ -55,7 +58,7 @@ export const updateGrade = async (gradeNo, gradeData, token) => {
     try {
         const response = await axios.put(`${BACKEND_SERVER}/grade/${gradeNo}`, gradeData, {
             headers: {
-                Authorization: `Bearer ${token}`, // ✅ JWT 토큰 추가
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
         });
@@ -71,7 +74,7 @@ export const deleteGrade = async (gradeNo, token) => {
     try {
         await axios.delete(`${BACKEND_SERVER}/grade/${gradeNo}`, {
             headers: {
-                Authorization: `Bearer ${token}`, // ✅ JWT 토큰 추가
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
         });
