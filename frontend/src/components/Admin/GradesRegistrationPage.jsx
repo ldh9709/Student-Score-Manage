@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../../css/RegistrationPage.css";
 import * as gradeApi from "../../api/gradeApi";
-import { useMemberAuth } from "../../util/AuthContext"; // ✅ 인증 정보 가져오기
 
 const GradesRegistrationPage = ({ setActiveTab }) => {
-  /* ✅ 인증 관리 */
-  const auth = useMemberAuth();
-  const token = auth?.token || null;
-
   const [gradeList, setGradeList] = useState([]);
   const [newGrade, setNewGrade] = useState(""); 
   const [isAdding, setIsAdding] = useState(false);
@@ -17,7 +12,7 @@ const GradesRegistrationPage = ({ setActiveTab }) => {
   /********************* API 호출 함수 ****************************/
   const getGradeList = async () => {
     try {
-      const responseJsonObject = await gradeApi.getGradeList(token); // ✅ 토큰 추가
+      const responseJsonObject = await gradeApi.getGradeList();
       setGradeList(responseJsonObject.data);
     } catch (error) {
       console.error("학년 리스트 불러오기 실패:", error);
@@ -39,7 +34,7 @@ const GradesRegistrationPage = ({ setActiveTab }) => {
     }
 
     try {
-      await gradeApi.saveGrade({ gradeName: newGrade }, token); // ✅ 토큰 추가
+      await gradeApi.saveGrade({ gradeName: newGrade });
       setNewGrade("");
       setIsAdding(false);
       getGradeList();
@@ -55,7 +50,7 @@ const GradesRegistrationPage = ({ setActiveTab }) => {
 
   const handleDeleteGrade = async () => {
     try {
-      await gradeApi.deleteGrade(deleteTarget, token); // ✅ 토큰 추가
+      await gradeApi.deleteGrade(deleteTarget);
       getGradeList();
     } catch (error) {
       console.error("학년 삭제 실패:", error);

@@ -7,7 +7,7 @@ import { useMemberAuth } from "../util/AuthContext";
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useMemberAuth();
-  
+
   /********************* 상태 관리 ****************************/
   const [teacher, setTeacher] = useState({
     teacherId: "",
