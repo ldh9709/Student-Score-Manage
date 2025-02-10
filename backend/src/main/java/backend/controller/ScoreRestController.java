@@ -86,6 +86,23 @@ public class ScoreRestController {
 
         return createResponse(response, headers, HttpStatus.OK);
     }
+    
+    /* 성적 리스트 수정 */
+    @Operation(summary = "성적 리스트 수정")
+    @PutMapping("/scores")
+    public ResponseEntity<Response> updateScores(@RequestBody List<ScoreDto> scoreDtoList) { // @PathVariable 제거
+        Response response = new Response();
+        HttpHeaders headers = createHttpHeaders();
+
+        List<Score> updatedScores = scoreService.updateScores(scoreDtoList); // 여러 개의 점수를 업데이트
+
+        response.setStatus(ResponseStatusCode.UPDATED_SCORE_SUCCESS);
+        response.setMessage(ResponseMessage.UPDATED_SCORE_SUCCESS);
+        response.setData(updatedScores);
+
+        return createResponse(response, headers, HttpStatus.OK);
+    }
+
 
     /* 성적 조회 */
     @Operation(summary = "성적 조회")

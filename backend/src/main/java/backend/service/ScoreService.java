@@ -17,6 +17,9 @@ public interface ScoreService {
 	//성적 업데이트
 	Score updateScore(ScoreDto scoreDto);
 	
+	//성적 리스트 업데이트
+	List<Score> updateScores(List<ScoreDto> scoreDto);
+	
 	//성적 삭제
 	Score deleteScore(Long scoreNo);
 	

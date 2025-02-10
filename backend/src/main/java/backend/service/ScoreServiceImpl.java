@@ -87,6 +87,45 @@ public class ScoreServiceImpl implements ScoreService {
 			throw new RuntimeException("updateScore fail", e); // 예외 재던짐
 		}
 	}
+	
+	@Override
+	public List<Score> updateScores(List<ScoreDto> scoreDtoList) {
+	    try {
+	        List<Score> updatedScores = new ArrayList<>();
+	        
+	        for (ScoreDto scoreDto : scoreDtoList) {
+	            //기존 Score 조회
+	            Score findScore = scoreRepository.findByScoreNo(scoreDto.getScoreNo());
+
+	            Student student = Student.builder().studentNo(scoreDto.getStudentNo()).build();
+	            Subject subject = Subject.builder().subjectNo(scoreDto.getSubjectNo()).build();
+	            ScoreType scoreType = ScoreType.builder().scoreTypeNo(scoreDto.getScoreTypeNo()).build();
+	            
+	            //null 체크 후 업데이트
+	            if (scoreDto.getScoreValue() != null) {
+	            	findScore.setScoreValue(scoreDto.getScoreValue());
+	            }
+	            if (scoreDto.getStudentNo() != null) {
+	            	findScore.setStudent(student);
+	            }
+	            if (scoreDto.getSubjectNo() != null) {
+	            	findScore.setSubject(subject);
+	            }
+	            if (scoreDto.getScoreTypeNo() != null) {
+	            	findScore.setScoreType(scoreType);
+	            }
+	            
+	            // 변경된 엔티티 저장
+	            updatedScores.add(scoreRepository.save(findScore));
+	        }
+
+	        return updatedScores;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("updateScores fail", e);
+	    }
+	}
+
 
 	@Override
 	public Score deleteScore(Long scoreNo) {
@@ -130,6 +169,7 @@ public class ScoreServiceImpl implements ScoreService {
 				.stream().map(ScoreDto::toDto)
 				.collect(Collectors.toList());
 	}
+
 
 
 
