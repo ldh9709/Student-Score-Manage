@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import "../../css/RegistrationPage.css";
 import * as studentApi from "../../api/studentApi";
 import * as gradeApi from "../../api/gradeApi";
+import { useMemberAuth } from "../../util/AuthContext"; //  인증 정보 가져오기
 
 const StudentRegistrationPage = () => {
+  /*  인증 관리 */
+  const auth = useMemberAuth();
+  const token = auth?.token || null;
+
   // 학생 정보 상태 관리
   const [student, setStudent] = useState({
     studentName: "",
@@ -24,7 +29,7 @@ const StudentRegistrationPage = () => {
   // 학년 데이터 가져오기
   const getGradeList = async () => {
     try {
-      const responseJsonObject = await gradeApi.getGradeList();
+      const responseJsonObject = await gradeApi.getGradeList(token); 
       setGradeList(responseJsonObject.data);
     } catch (error) {
       console.error("학년 리스트 불러오기 실패:", error);
@@ -47,7 +52,7 @@ const StudentRegistrationPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // 기본 폼 제출 이벤트 방지
     try {
-      await studentApi.saveStudent(student); // API 호출
+      await studentApi.saveStudent(student, token); 
       alert("학생이 성공적으로 등록되었습니다."); // 성공 메시지 추가
 
       // 입력 필드 초기화

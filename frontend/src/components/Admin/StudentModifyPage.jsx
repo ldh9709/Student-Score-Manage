@@ -3,8 +3,13 @@ import "../../css/RegistrationPage.css";
 import * as studentApi from "../../api/studentApi";
 import * as gradeApi from "../../api/gradeApi";
 import { useParams } from "react-router-dom";
+import { useMemberAuth } from "../../util/AuthContext"; //  인증 정보 가져오기
 
 const StudentModifyPage = ({ setActiveTab, selectedStudentNo, setSelectedStudentNo }) => { 
+
+  /*  인증 관리 */
+  const auth = useMemberAuth();
+  const token = auth?.token || null;
 
   /********************* 상태 관리 ****************************/
   // 학생 정보 상태 관리
@@ -34,7 +39,7 @@ const StudentModifyPage = ({ setActiveTab, selectedStudentNo, setSelectedStudent
   // 학년 데이터 가져오기
   const getGradeList = async () => {
     try {
-      const responseJsonObject = await gradeApi.getGradeList();
+      const responseJsonObject = await gradeApi.getGradeList(token); 
       setGradeList(responseJsonObject.data);
     } catch (error) {
       console.error("학년 리스트 불러오기 실패:", error);
@@ -43,11 +48,11 @@ const StudentModifyPage = ({ setActiveTab, selectedStudentNo, setSelectedStudent
 
   // 학생 정보 가져오기
   const getStudentByStudentNo = async () => {
-    if (!studentId) return; // ✅ studentId가 없으면 API 호출하지 않음
+    if (!studentId) return; //  studentId가 없으면 API 호출하지 않음
 
     try {
       console.log(`Fetching student with ID: ${studentId}`); // 디버깅 로그 추가
-      const studentData = await studentApi.getStudentByStudentNo(studentId);
+      const studentData = await studentApi.getStudentByStudentNo(studentId, token); 
       setStudent(studentData.data);
     } catch (error) {
       console.error("학생 정보 불러오기 오류:", error);
@@ -65,7 +70,7 @@ const StudentModifyPage = ({ setActiveTab, selectedStudentNo, setSelectedStudent
     if (studentId) {
       getStudentByStudentNo();
     }
-  }, [studentId]); // ✅ studentId가 변경될 때만 실행
+  }, [studentId]); //  studentId가 변경될 때만 실행
 
   /********************* 핸들러 함수 ****************************/
   // 입력값 변경 핸들러
@@ -81,7 +86,7 @@ const StudentModifyPage = ({ setActiveTab, selectedStudentNo, setSelectedStudent
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await studentApi.updateStudent(studentId, student);
+      await studentApi.updateStudent(studentId, student, token); 
       alert("학생 정보가 성공적으로 수정되었습니다.");
     } catch (error) {
       console.error("학생 수정 실패:", error);

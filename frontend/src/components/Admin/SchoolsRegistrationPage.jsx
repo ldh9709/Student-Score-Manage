@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../../css/RegistrationPage.css";
 import * as schoolApi from "../../api/schoolApi";
+import { useMemberAuth } from "../../util/AuthContext"; //  인증 정보 가져오기
 
 const SchoolsRegistrationPage = ({ setActiveTab }) => {
+
+  /*  인증 관리 */
+  const auth = useMemberAuth();
+  const token = auth?.token || null;
 
   /********************* 상태 관리 ****************************/
   const [schoolList, setSchoolList] = useState([]);
@@ -14,7 +19,7 @@ const SchoolsRegistrationPage = ({ setActiveTab }) => {
   /********************* API 호출 함수 ****************************/
   const getSchoolList = async () => {
     try {
-      const responseJsonObject = await schoolApi.getSchoolList();
+      const responseJsonObject = await schoolApi.getSchoolList(token); 
       setSchoolList(responseJsonObject.data);
     } catch (error) {
       console.error("학교 리스트 불러오기 실패:", error);
@@ -38,7 +43,7 @@ const SchoolsRegistrationPage = ({ setActiveTab }) => {
     }
 
     try {
-      await schoolApi.saveSchool({ schoolName: newSchool });
+      await schoolApi.saveSchool({ schoolName: newSchool }, token); 
       setNewSchool("");
       setIsAdding(false);
       getSchoolList();
@@ -54,7 +59,7 @@ const SchoolsRegistrationPage = ({ setActiveTab }) => {
 
   const handleDeleteSchool = async () => {
     try {
-      await schoolApi.deleteSchool(deleteTarget);
+      await schoolApi.deleteSchool(deleteTarget, token); 
       getSchoolList();
     } catch (error) {
       console.error("학교 삭제 실패:", error);

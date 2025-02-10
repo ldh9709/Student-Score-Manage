@@ -3,6 +3,7 @@ import "../../css/ScoreManagePage.css";
 import { Radar } from "react-chartjs-2";
 import { Chart as ChartJS,   RadialLinearScale,    PointElement,  LineElement,    Filler,    Tooltip,    Legend,} from "chart.js";
 import { useNavigate, useParams } from "react-router-dom";
+import { useMemberAuth } from "../../util/AuthContext";
 
 import * as scoreApi from "../../api/scoreApi";
 import * as subjectApi from "../../api/subjectApi";
@@ -15,6 +16,10 @@ ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, 
 const ScoreManagePage = ({ setActiveTab, selectedStudentNo, setSelectedStudentNo }) => {
 
   /********************* 상태 관리 ****************************/
+  //인증 정보 가져오기
+  const auth = useMemberAuth();
+  const token = auth?.token || null;
+
   // URL에서 특정 학생 번호 가져오기
   const { studentNo } = useParams();
 
@@ -99,7 +104,7 @@ const radarData = {
   // 학생 정보 가져오기
   const getStudentByStudentNo = async () => {
     try {
-      const studentData = await studentApi.getStudentByStudentNo(studentId);
+      const studentData = await studentApi.getStudentByStudentNo(studentId, token);
       setStudent(studentData.data);
     } catch (error) {
       console.error("학생 정보 불러오기 오류:", error);
@@ -109,7 +114,7 @@ const radarData = {
   // 학생의 성적 가져오기
   const getScoreListByStudentNo = async () => {
     try {
-      const studentScores = await scoreApi.getScoreListByStudentNo(studentId);
+      const studentScores = await scoreApi.getScoreListByStudentNo(studentId, token);
       setScores(studentScores.data);
       console.log("studentScores : ", studentScores);
     } catch (error) {
@@ -120,7 +125,7 @@ const radarData = {
   //시험 유형 가져오기
   const getScoreTypes = async () => {
     try {
-      const scoreTypes = await scoreTypeApi.getScoreTypeList();
+      const scoreTypes = await scoreTypeApi.getScoreTypeList(token);
       setScoreTypes(scoreTypes.data);
     } catch (error) {
       console.error("시험 유형 불러오기 오류 : ", error);
@@ -130,7 +135,7 @@ const radarData = {
   // 과목 리스트 가져오기
   const getSubjectList = async () => {
     try {
-      const responseJsonObject = await subjectApi.getSubjectList();
+      const responseJsonObject = await subjectApi.getSubjectList(token);
       const subjectMap = {};
       responseJsonObject.data.forEach((subject) => {
         subjectMap[subject.subjectNo] = subject.subjectName;

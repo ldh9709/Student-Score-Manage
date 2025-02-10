@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../../css/RegistrationPage.css";
 import * as subjectApi from "../../api/subjectApi";
+import { useMemberAuth } from "../../util/AuthContext"; //  인증 정보 가져오기
 
 const SubjectsRegistrationPage = ({ setActiveTab }) => {
+  /*인증 관리 */
+  const auth = useMemberAuth();
+  const token = auth?.token || null;
 
   /********************* 상태 관리 ****************************/
   const [subjectList, setSubjectList] = useState([]);
@@ -14,7 +18,7 @@ const SubjectsRegistrationPage = ({ setActiveTab }) => {
   /********************* API 호출 함수 ****************************/
   const getSubjectList = async () => {
     try {
-      const responseJsonObject = await subjectApi.getSubjectList();
+      const responseJsonObject = await subjectApi.getSubjectList(token); 
       setSubjectList(responseJsonObject.data);
     } catch (error) {
       console.error("과목 리스트 불러오기 실패:", error);
@@ -38,7 +42,7 @@ const SubjectsRegistrationPage = ({ setActiveTab }) => {
     }
 
     try {
-      await subjectApi.saveSubject({ subjectName: newSubject });
+      await subjectApi.saveSubject({ subjectName: newSubject }, token); 
       setNewSubject("");
       setIsAdding(false);
       getSubjectList();
@@ -54,7 +58,7 @@ const SubjectsRegistrationPage = ({ setActiveTab }) => {
 
   const handleDeleteSubject = async () => {
     try {
-      await subjectApi.deleteSubject(deleteTarget);
+      await subjectApi.deleteSubject(deleteTarget, token);
       getSubjectList();
     } catch (error) {
       console.error("과목 삭제 실패:", error);
