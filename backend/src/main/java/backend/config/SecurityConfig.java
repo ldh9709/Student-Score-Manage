@@ -34,13 +34,28 @@ public class SecurityConfig {
 	
 	//인증 없이 접근 가능한 경로 정의
 	private final String[] whitelist = {
-		"/**", //모든 경로
 		"/login", //로그인
+		"/logout", //로그인
 	};
 	
 	//인증이 필요한 경로 정의
 	private static final String[] AUTHENTICATED = {
-			
+			"/admin",
+			"/admin/**",
+			"/teacher",
+			"/teacher/**",
+			"/subject",
+			"/subject/**",
+			"/student",
+			"/student/**",
+			"/score",
+			"/score/**",
+			"/scoreType",
+			"/scoreType/**",
+			"/school",
+			"/school/**",
+			"/grade",
+			"/grade/**",
 	};
 	
 	/* Spring Security에서 HTTP 요청에 대한 보안 설정을 구성 */
@@ -86,7 +101,6 @@ public class SecurityConfig {
 
 		/***** 페이지 접근 경로 *****/
 		httpSecurity.authorizeHttpRequests((authorizeHttpRequestsConfig) -> {
-		      // swagger설정
 		      authorizeHttpRequestsConfig
 		      
 		      	  .requestMatchers(AUTHENTICATED).authenticated()//인증된 사용자만 접근 가능
