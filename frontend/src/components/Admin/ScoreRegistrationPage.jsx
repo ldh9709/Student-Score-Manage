@@ -165,7 +165,7 @@ const ScoreRegistrationPage = () => {
 
   return (
     <div className="score-registration-content">
-      <h2>점수 등록 / 수정</h2>
+      <h2>성적 등록 / 수정</h2>
       <form className="score-registration-form" onSubmit={handleSubmit}>
         <table>
           <tbody>

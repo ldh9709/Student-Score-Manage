@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../css/RegistrationPage.css";
 import * as studentApi from "../../api/studentApi";
 import * as gradeApi from "../../api/gradeApi";
+import * as schoolApi from "../../api/schoolApi";
 import { useMemberAuth } from "../../util/AuthContext"; //  인증 정보 가져오기
 
 const StudentRegistrationPage = () => {
@@ -26,6 +27,9 @@ const StudentRegistrationPage = () => {
   // 학년 리스트 상태 관리
   const [gradeList, setGradeList] = useState([]);
 
+  // 학교 리스트 상태 관리
+  const [schoolList, setSchoolList] = useState([]);
+
   // 학년 데이터 가져오기
   const getGradeList = async () => {
     try {
@@ -34,11 +38,22 @@ const StudentRegistrationPage = () => {
     } catch (error) {
       console.error("학년 리스트 불러오기 실패:", error);
     }
+  }
+
+  // 학교 데이터 가져오기
+  const getSchoolList = async () => {
+    try {
+      const responseJsonObject = await schoolApi.getSchoolList(token); 
+      setSchoolList(responseJsonObject.data);
+    } catch (error) {
+      console.error("학교 리스트 불러오기 실패:", error);
+    }
   };
 
   // 처음 페이지 로드될 때 학년 리스트 가져오기
   useEffect(() => {
     getGradeList();
+    getSchoolList();
   }, []);
   
   const handleChange = (e) => {
@@ -93,7 +108,14 @@ const StudentRegistrationPage = () => {
 
             <tr>
               <td><label>학교</label></td>
-              <td><input type="text" name="studentSchool" value={student.studentSchool} onChange={handleChange} /></td>
+              <td>
+                <select name="studentSchool" value={student.studentSchool} onChange={handleChange} required>
+                    <option value="">선택</option>
+                    {schoolList.map((school) => (
+                      <option key={school.schoolNo} value={school.schoolName}>{school.schoolName} </option>
+                    ))}
+                </select>
+              </td>
               
               <td><label>생년월일</label></td>
               <td><input type="date" name="studentBirthday" value={student.studentBirthday} onChange={handleChange} /></td>
