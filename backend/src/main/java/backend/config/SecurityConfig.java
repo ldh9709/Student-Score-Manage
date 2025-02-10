@@ -34,6 +34,7 @@ public class SecurityConfig {
 	
 	//인증 없이 접근 가능한 경로 정의
 	private final String[] whitelist = {
+		"/**",
 		"/login", //로그인
 		"/logout", //로그인
 	};
@@ -116,21 +117,29 @@ public class SecurityConfig {
 	}
 	
 	/* CORS 객체 설정 */
-	 @Bean
-	  public CorsConfigurationSource corsConfigurationSource() {
-	    CorsConfiguration configuration = new CorsConfiguration();  // CORS 설정 객체 생성
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+	    CorsConfiguration configuration = new CorsConfiguration();
 
-	    // CORS 설정
-	    configuration.setAllowedOriginPatterns(Arrays.asList("*"));  // 모든 출처에서 요청을 허용
-	    configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE"));  // 허용할 HTTP 메소드 설정
-	    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));  // 허용할 HTTP 헤더 설정
-	    configuration.setAllowCredentials(true);  // 쿠키를 허용
+	    //프론트엔드 도메인 명시 (반드시 * 대신 특정 도메인 사용)
+	    configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); 
 
-	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();  // CORS 설정을 경로 기반으로 적용
-	    source.registerCorsConfiguration("/**", configuration);  // 모든 경로에 대해 CORS 설정 적용
+	    //허용할 HTTP 메소드 설정
+	    configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE"));  
 
-	    return source;  // CORS 설정을 반환
-	  }
+	    //허용할 HTTP 헤더 설정
+	    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));  
+
+	    //쿠키 인증을 허용 (JWT 쿠키 사용)
+	    configuration.setAllowCredentials(true);  
+
+	    //CORS 설정을 경로 기반으로 적용
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();  
+	    source.registerCorsConfiguration("/**", configuration);  
+
+	    return source;  //수정된 CORS 설정 반환
+	}
+
 	
 	
 }
