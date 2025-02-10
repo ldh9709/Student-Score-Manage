@@ -31,8 +31,14 @@ const Header = () => {
         {/* 메뉴 항목 */}
         <nav className="menu">
           <ul>
-            <li><a href="/main">메인</a></li>
-            <li><a href="/admin">관리자 페이지</a></li>
+            {token ? (
+              <>
+              <li><a href="/main">메인</a></li>
+              <li><a href="/admin">관리자 페이지</a></li>
+              </>
+            ) : (
+              <li><a href="/main">메인</a></li>
+            )}
           </ul>
         </nav>
       </div>
