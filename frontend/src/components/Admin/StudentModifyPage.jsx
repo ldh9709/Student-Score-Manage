@@ -3,11 +3,15 @@ import "../../css/RegistrationPage.css";
 import * as studentApi from "../../api/studentApi";
 import * as gradeApi from "../../api/gradeApi";
 import { useParams } from "react-router-dom";
+import { useMemberAuth } from "../../util/AuthContext"; // ✅ 인증 정보 가져오기
 
 const StudentModifyPage = ({ setActiveTab, selectedStudentNo, setSelectedStudentNo }) => { 
 
+  /* ✅ 인증 관리 */
+  const auth = useMemberAuth();
+  const token = auth?.token || null;
+
   /********************* 상태 관리 ****************************/
-  // 학생 정보 상태 관리
   const [student, setStudent] = useState({
     studentName: "",
     studentGender: "",
@@ -21,33 +25,26 @@ const StudentModifyPage = ({ setActiveTab, selectedStudentNo, setSelectedStudent
     studentDetailAddress: "",
   });
 
-  // 학년 리스트 상태 관리
   const [gradeList, setGradeList] = useState([]);
-
-  // URL에서 studentNo 가져오기
   const { studentNo } = useParams();
-
-  // **선택한 학생 번호 가져오기 (selectedStudentNo가 있으면 우선 사용)**
   const studentId = selectedStudentNo || studentNo;
 
   /********************* API 호출 함수 ****************************/
-  // 학년 데이터 가져오기
   const getGradeList = async () => {
     try {
-      const responseJsonObject = await gradeApi.getGradeList();
+      const responseJsonObject = await gradeApi.getGradeList(token); // ✅ 토큰 추가
       setGradeList(responseJsonObject.data);
     } catch (error) {
       console.error("학년 리스트 불러오기 실패:", error);
     }
   };
 
-  // 학생 정보 가져오기
   const getStudentByStudentNo = async () => {
-    if (!studentId) return; // ✅ studentId가 없으면 API 호출하지 않음
+    if (!studentId) return; 
 
     try {
-      console.log(`Fetching student with ID: ${studentId}`); // 디버깅 로그 추가
-      const studentData = await studentApi.getStudentByStudentNo(studentId);
+      console.log(`Fetching student with ID: ${studentId}`); 
+      const studentData = await studentApi.getStudentByStudentNo(studentId, token); // ✅ 토큰 추가
       setStudent(studentData.data);
     } catch (error) {
       console.error("학생 정보 불러오기 오류:", error);
@@ -55,20 +52,17 @@ const StudentModifyPage = ({ setActiveTab, selectedStudentNo, setSelectedStudent
   };
 
   /********************* useEffect ****************************/
-  // **최초 마운트 시 학년 리스트 가져오기**
   useEffect(() => {
     getGradeList();
   }, []);
 
-  // **studentId가 변경될 때만 학생 정보 가져오기**
   useEffect(() => {
     if (studentId) {
       getStudentByStudentNo();
     }
-  }, [studentId]); // ✅ studentId가 변경될 때만 실행
+  }, [studentId]);
 
   /********************* 핸들러 함수 ****************************/
-  // 입력값 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     setStudent((prevStudent) => ({
@@ -77,11 +71,10 @@ const StudentModifyPage = ({ setActiveTab, selectedStudentNo, setSelectedStudent
     }));
   };
 
-  // 학생 수정 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await studentApi.updateStudent(studentId, student);
+      await studentApi.updateStudent(studentId, student, token); // ✅ 토큰 추가
       alert("학생 정보가 성공적으로 수정되었습니다.");
     } catch (error) {
       console.error("학생 수정 실패:", error);
