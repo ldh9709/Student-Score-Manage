@@ -1,5 +1,3 @@
-<div align=center>
-
 
 ## 프로젝트
 
